@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1070235395688",
+    "firebase_url": "https://minimyze-b2522.firebaseio.com",
+    "project_id": "minimyze-b2522",
+    "storage_bucket": "minimyze-b2522.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070235395688:android:5a9060458e451794",
+        "android_client_info": {
+          "package_name": "com.minimyze.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070235395688-d0n1no4vuua00mpmvelck4aunm7lt7gc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.minimyze.android",
+            "certificate_hash": "16E952A8C5BF4DC81414254C00383330E797FB27"
+          }
+        },
+        {
+          "client_id": "1070235395688-sjerg4misa1m699adroa0maev486pj70.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzQ4HW1ff5igShrNJRmcG99Pe2-l-yWzA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070235395688-sjerg4misa1m699adroa0maev486pj70.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
