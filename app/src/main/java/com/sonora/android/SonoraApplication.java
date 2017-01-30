@@ -1,4 +1,4 @@
-package com.minimyze.android;
+package com.sonora.android;
 
 import android.app.Application;
 
@@ -6,5 +6,5 @@ import android.app.Application;
  * Created by harrisonmelton on 1/27/17.
  */
 
-public class MinimyzeApplication extends Application {
+public class SonoraApplication extends Application {
 }

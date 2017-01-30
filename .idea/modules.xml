@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Minimyze.iml" filepath="$PROJECT_DIR$/Minimyze.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sonora.iml" filepath="$PROJECT_DIR$/Sonora.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

@@ -1,4 +1,4 @@
-package com.minimyze.android;
+package com.sonora.android;
 
 import org.junit.Test;
 
