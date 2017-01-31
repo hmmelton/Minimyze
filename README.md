@@ -1,2 +1,2 @@
-# Minimyze
-Minimyze is an application that helps users reduce their food waste by telling them exactly what to buy - no more and no less.
+# Sonora
+Sonora is a social application focused on "foodies" and people who want to improve their quality of eating and reduce their food waste.
