@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Views
     @BindView(R.id.toolbar) protected Toolbar mToolbar;
     @BindView(R.id.pager) protected ViewPager mPager;
     @BindView(R.id.tabs) protected TabLayout mTabLayout;
@@ -34,12 +35,17 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Set up ViewPager
         setupViewPager(mPager);
 
         mTabLayout.setupWithViewPager(mPager);
+
+        // Add tab icons
+        mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_folder);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_receipt);
+        mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person);
     }
 
     @Override
@@ -70,16 +76,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(FeedFragment.newInstance(), "ONE");
-        adapter.addFragment(FeedFragment.newInstance(), "TWO");
-        adapter.addFragment(FeedFragment.newInstance(), "THREE");
+        // Add fragments
+        // TODO: Replace with unique fragments
+        adapter.addFragment(FeedFragment.newInstance()); // Home
+        adapter.addFragment(FeedFragment.newInstance()); // User Menus
+        adapter.addFragment(FeedFragment.newInstance()); // User Shopping Lists
+        adapter.addFragment(FeedFragment.newInstance()); // Profile
         viewPager.setAdapter(adapter);
     }
 
-    //
+    // Adapter class for view pager tabs
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -95,14 +103,8 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void addFragment(Fragment fragment) {
             mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
         }
     }
 }
