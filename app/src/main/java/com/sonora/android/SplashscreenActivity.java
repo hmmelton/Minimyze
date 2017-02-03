@@ -3,15 +3,18 @@ package com.sonora.android;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.sonora.android.animations.ChangeWeightAnimation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -24,6 +27,15 @@ public class SplashscreenActivity extends AppCompatActivity {
     @BindView(R.id.image_icon_content) protected RelativeLayout mLogoContentView;
     @BindView(R.id.login_content) protected RelativeLayout mLoginContentView;
     @BindView(R.id.splash_title) protected TextView mTitle;
+
+    // OnClickListeners
+    @OnClick(R.id.facebook_login) void onFacebookLoginClick() {
+        Toast.makeText(SplashscreenActivity.this, "Coming soon", Toast.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.google_login) void onGoogleLoginClick() {
+        Toast.makeText(SplashscreenActivity.this, "Coming soon", Toast.LENGTH_LONG).show();
+    }
 
     private final int LOGIN_ANIMATION_TIME = 1000;
 
@@ -66,15 +78,20 @@ public class SplashscreenActivity extends AppCompatActivity {
         // Create animation for logo section
         ChangeWeightAnimation logoAnim = new ChangeWeightAnimation(mLogoContentView, 10, 6);
         logoAnim.setDuration(LOGIN_ANIMATION_TIME);
-        logoAnim.setInterpolator(interpolator);
 
         // Create animation for login section
         ChangeWeightAnimation loginAnim = new ChangeWeightAnimation(mLoginContentView, 0, 4);
         loginAnim.setDuration(LOGIN_ANIMATION_TIME);
-        loginAnim.setInterpolator(interpolator);
+
+        // Create fade in animation for title
+        AlphaAnimation titleAnim = new AlphaAnimation(0.0f, 1.0f);
+        titleAnim.setDuration(LOGIN_ANIMATION_TIME / 2);
+        titleAnim.setStartOffset(LOGIN_ANIMATION_TIME);
 
         // Start animations
         mLogoContentView.startAnimation(logoAnim);
         mLoginContentView.startAnimation(loginAnim);
+        mTitle.setVisibility(View.VISIBLE);
+        mTitle.startAnimation(titleAnim);
     }
 }
