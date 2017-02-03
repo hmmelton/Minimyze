@@ -3,20 +3,88 @@
               android:id="@+id/fullscreen_content"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:background="?colorPrimary"
-              android:orientation="horizontal"
-              android:weightSum="6"
-              android:gravity="center"
+              android:orientation="vertical"
+              android:weightSum="10"
              tools:context="com.sonora.android.SplashscreenActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
 
-        <android.support.v7.widget.AppCompatImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:src="@drawable/ic_almond"/>
+    <RelativeLayout
+        android:id="@+id/image_icon_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:background="?colorPrimary"
+        android:animateLayoutChanges="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="6">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_almond"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/splash_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@android:color/white"
+                android:textAlignment="center"
+                android:textSize="14pt"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/login_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+
+        <View
+            android:id="@+id/login_center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/facebook_login"
+            style="@style/LoginButton"
+            android:layout_above="@id/login_center"
+            android:background="@color/com_facebook_blue"
+            android:text="@string/facebook_login"
+            android:layout_marginBottom="@dimen/double_standard_margin"/>
+
+        <TextView
+            android:id="@+id/google_login"
+            style="@style/LoginButton"
+            android:layout_below="@id/login_center"
+            android:background="@color/common_google_signin_btn_text_light_default"
+            android:text="@string/google_login"
+            android:layout_marginTop="@dimen/double_standard_margin"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

@@ -35,4 +35,17 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <!-- View Styles -->
+
+    <!-- Style for login buttons -->
+    <style name="LoginButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/login_button_width</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">8pt</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:padding">@dimen/half_standard_margin</item>
+    </style>
+
 </resources>

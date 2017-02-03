@@ -11,4 +11,12 @@
     <dimen name="tab_padding_bottom">16dp</dimen>
     <dimen name="tab_label">14sp</dimen>
     <dimen name="custom_tab_layout_height">72dp</dimen>
+
+    <!-- Custom margins -->
+    <dimen name="double_standard_margin">32dp</dimen>
+    <dimen name="standard_margin">16dp</dimen>
+    <dimen name="half_standard_margin">8dp</dimen>
+    <dimen name="quarter_standard_margin">4dp</dimen>
+
+    <dimen name="login_button_width">300dp</dimen>
 </resources>

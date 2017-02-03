@@ -1,10 +1,14 @@
 package com.sonora.android;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.sonora.android.animations.ChangeWeightAnimation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,7 +19,13 @@ import butterknife.ButterKnife;
  */
 public class SplashscreenActivity extends AppCompatActivity {
 
+    // Views
     @BindView(R.id.fullscreen_content) protected View mContentView;
+    @BindView(R.id.image_icon_content) protected RelativeLayout mLogoContentView;
+    @BindView(R.id.login_content) protected RelativeLayout mLoginContentView;
+    @BindView(R.id.splash_title) protected TextView mTitle;
+
+    private final int LOGIN_ANIMATION_TIME = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +44,37 @@ public class SplashscreenActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        // TODO: Remove this
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            showLogin();
+        }
+
+        /*// TODO: Remove this
         new Handler().postDelayed(() -> {
             // Go to main activity
             startActivity(new Intent(this, MainActivity.class));
             overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
             finish();
-        }, 1000);
+        }, 1000);*/
+    }
+
+    /**
+     * This method animates the logo section and the login section heights.
+     */
+    private void showLogin() {
+        DecelerateInterpolator interpolator = new DecelerateInterpolator();
+
+        // Create animation for logo section
+        ChangeWeightAnimation logoAnim = new ChangeWeightAnimation(mLogoContentView, 10, 6);
+        logoAnim.setDuration(LOGIN_ANIMATION_TIME);
+        logoAnim.setInterpolator(interpolator);
+
+        // Create animation for login section
+        ChangeWeightAnimation loginAnim = new ChangeWeightAnimation(mLoginContentView, 0, 4);
+        loginAnim.setDuration(LOGIN_ANIMATION_TIME);
+        loginAnim.setInterpolator(interpolator);
+
+        // Start animations
+        mLogoContentView.startAnimation(logoAnim);
+        mLoginContentView.startAnimation(loginAnim);
     }
 }

@@ -11,4 +11,8 @@
     <!-- Menu Strings -->
     <string name="sign_out">Sign Out</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Login Strings -->
+    <string name="facebook_login">Facebook</string>
+    <string name="google_login">Google</string>
 </resources>
