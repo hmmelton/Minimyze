@@ -39,4 +39,6 @@ captures/
 # Keystore files
 *.jks
 app/libs/
+
+# Strings
 app/src/main/res/values/strings.xml
