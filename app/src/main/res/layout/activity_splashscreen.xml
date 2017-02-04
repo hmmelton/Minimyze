@@ -51,7 +51,7 @@
                 android:textColor="@android:color/white"
                 android:textAlignment="center"
                 android:textSize="14pt"
-                android:visibility="gone"/>
+                android:visibility="invisible"/>
 
         </LinearLayout>
 

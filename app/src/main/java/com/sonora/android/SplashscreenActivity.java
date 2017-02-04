@@ -1,6 +1,7 @@
 package com.sonora.android;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -37,7 +38,8 @@ public class SplashscreenActivity extends AppCompatActivity {
         Toast.makeText(SplashscreenActivity.this, "Coming soon", Toast.LENGTH_LONG).show();
     }
 
-    private final int LOGIN_ANIMATION_TIME = 1000;
+    private final int LOGIN_ANIMATION_TIME = 600;
+    private final int SPLASHSCREEN_WAIT_TIME = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +58,12 @@ public class SplashscreenActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            showLogin();
-        }
-
-        /*// TODO: Remove this
         new Handler().postDelayed(() -> {
-            // Go to main activity
-            startActivity(new Intent(this, MainActivity.class));
-            overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-            finish();
-        }, 1000);*/
+            // After displaying splash screen,
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                showLogin();
+            }
+        }, SPLASHSCREEN_WAIT_TIME);
     }
 
     /**
