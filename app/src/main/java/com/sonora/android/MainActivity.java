@@ -1,5 +1,6 @@
 package com.sonora.android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.sonora.android.fragments.FeedFragment;
 
 import java.util.ArrayList;
@@ -61,7 +64,17 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_sign_out:
+                FirebaseAuth.getInstance().signOut();
+                LoginManager.getInstance().logOut();
+                startActivity(new Intent(this, SplashscreenActivity.class));
+                // Override for smooth transition
+                overridePendingTransition(0, 0);
+                finish();
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
