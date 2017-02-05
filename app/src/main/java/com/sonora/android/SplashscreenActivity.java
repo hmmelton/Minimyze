@@ -24,7 +24,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +54,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
     @BindView(R.id.splash_title) protected TextView mTitle;
 
     // String Resources
-    @BindString(R.string.firebase_web_client_id) protected String WEB_CLIENT_ID;
+    @BindString(R.string.default_web_client_id) protected String WEB_CLIENT_ID;
     @BindString(R.string.google_sign_in_error) protected String GOOGLE_SIGN_IN_ERROR;
 
     // OnClickListeners
@@ -115,7 +117,11 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         new Handler().postDelayed(() -> {
             // After displaying splash screen,
             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                // User has not yet logged in
                 showLogin();
+            } else {
+                // User is already logged in, so go to main screen
+                login();
             }
         }, SPLASHSCREEN_WAIT_TIME);
     }
@@ -133,7 +139,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
             } else {
                 // Sign in failed
                 Toast.makeText(this, GOOGLE_SIGN_IN_ERROR, Toast.LENGTH_LONG).show();
-                Log.e(TAG, "result failure: " + result.getStatus().getStatusMessage());
+                Log.e(TAG, String.format("result failure: %s, %s, %s, %s", result, result.getStatus(), result.getSignInAccount(), result.getStatus().getStatusCode()));
             }
         }
         // Required by Facebook SDK
@@ -221,6 +227,8 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(WEB_CLIENT_ID)
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .requestScopes(new Scope(Scopes.PLUS_ME))
                 .requestEmail()
                 .build();
 
