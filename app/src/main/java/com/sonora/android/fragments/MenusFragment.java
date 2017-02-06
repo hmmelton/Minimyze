@@ -7,14 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.sonora.android.R;
 import com.sonora.android.interfaces.OnImageRetrievedListener;
 import com.sonora.android.utils.FirebaseImageUtil;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -23,8 +21,6 @@ import butterknife.ButterKnife;
  */
 
 public class MenusFragment extends Fragment {
-
-    @BindView(R.id.image_view) protected ImageView mImageView;
 
     // Static method for constructing fragment
     public static MenusFragment newInstance() {
