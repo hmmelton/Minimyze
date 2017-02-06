@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.sonora.android.R;
 import com.sonora.android.interfaces.OnImageRetrievedListener;
 import com.sonora.android.utils.FirebaseImageUtil;
@@ -44,9 +43,7 @@ public class MenusFragment extends Fragment {
             @Override
             public void onSuccess(Uri uri) {
                 // URI fetched successfully, so load it into ImageView
-                Glide.with(getContext())
-                        .load(uri)
-                        .into(mImageView);
+
             }
 
             @Override
