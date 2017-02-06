@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sonora.android.R;
+import com.sonora.android.models.ListItem;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +25,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class ShoppingListSection extends StatelessSection {
 
+    private List<ListItem> mItems; // TODO: set this in constructor
     private String mTitle;
 
     public ShoppingListSection(String title) {

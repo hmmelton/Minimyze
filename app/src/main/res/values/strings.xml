@@ -18,4 +18,5 @@
 
     <!-- Error strings -->
     <string name="google_sign_in_error">Error signing in with Google</string>
+    <string name="image_retrieval_error">Error retrieving image</string>
 </resources>

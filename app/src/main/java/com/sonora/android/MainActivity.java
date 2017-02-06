@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.sonora.android.fragments.FeedFragment;
+import com.sonora.android.fragments.MenusFragment;
 import com.sonora.android.fragments.ShoppingListFragment;
 
 import java.util.ArrayList;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         // Add fragments
         // TODO: Replace with unique fragments
         adapter.addFragment(FeedFragment.newInstance()); // Home
-        adapter.addFragment(FeedFragment.newInstance()); // User Menus
+        adapter.addFragment(MenusFragment.newInstance()); // User Menus
         adapter.addFragment(ShoppingListFragment.newInstance()); // User Shopping Lists
         adapter.addFragment(FeedFragment.newInstance()); // Profile
         viewPager.setAdapter(adapter);

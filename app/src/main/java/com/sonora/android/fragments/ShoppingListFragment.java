@@ -55,6 +55,13 @@ public class ShoppingListFragment extends Fragment {
         // Add your Sections
         sectionAdapter.addSection(new ShoppingListSection("Beverages"));
         sectionAdapter.addSection(new ShoppingListSection("Bakery"));
+        sectionAdapter.addSection(new ShoppingListSection("Canned and Jarred"));
+        sectionAdapter.addSection(new ShoppingListSection("Dairy"));
+        sectionAdapter.addSection(new ShoppingListSection("Dry and Baking"));
+        sectionAdapter.addSection(new ShoppingListSection("Frozen"));
+        sectionAdapter.addSection(new ShoppingListSection("Meats"));
+        sectionAdapter.addSection(new ShoppingListSection("Produce"));
+        sectionAdapter.addSection(new ShoppingListSection("Snacks"));
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setAdapter(sectionAdapter);
