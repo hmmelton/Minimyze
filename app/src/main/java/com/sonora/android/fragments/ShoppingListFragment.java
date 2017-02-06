@@ -1,13 +1,16 @@
 package com.sonora.android.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.sonora.android.R;
 import com.sonora.android.adapters.ShoppingListAdapter;
@@ -17,6 +20,7 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnTouch;
 
 /**
  * Created by harrisonmelton on 2/4/17.
@@ -26,6 +30,11 @@ import butterknife.ButterKnife;
 public class ShoppingListFragment extends Fragment {
 
     @BindView(R.id.shopping_list_recycler) protected RecyclerView mRecyclerView;
+    @OnTouch(R.id.shopping_list_recycler)
+    boolean onLayoutTouched(View v, MotionEvent ev) {
+        hideKeyboard(v);
+        return false;
+    }
 
     // Static method for constructing fragment
     public static ShoppingListFragment newInstance() {
@@ -46,5 +55,14 @@ public class ShoppingListFragment extends Fragment {
         mRecyclerView.setAdapter(new ShoppingListAdapter(new ShoppingList(new JSONObject())));
 
         return root;
+    }
+
+    /**
+     * Hides virtual keyboard
+     */
+    protected void hideKeyboard(View view) {
+        InputMethodManager in =
+                (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }
