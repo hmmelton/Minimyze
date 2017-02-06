@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.sonora.android.fragments.FeedFragment;
+import com.sonora.android.fragments.ShoppingListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,10 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 finish();
         }
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -93,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Replace with unique fragments
         adapter.addFragment(FeedFragment.newInstance()); // Home
         adapter.addFragment(FeedFragment.newInstance()); // User Menus
-        adapter.addFragment(FeedFragment.newInstance()); // User Shopping Lists
+        adapter.addFragment(ShoppingListFragment.newInstance()); // User Shopping Lists
         adapter.addFragment(FeedFragment.newInstance()); // Profile
         viewPager.setAdapter(adapter);
     }
@@ -102,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
 
@@ -116,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment) {
+        void addFragment(Fragment fragment) {
             mFragmentList.add(fragment);
         }
     }

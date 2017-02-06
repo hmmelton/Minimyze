@@ -3,6 +3,7 @@ package com.sonora.android.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,9 @@ import android.view.ViewGroup;
 
 import com.sonora.android.R;
 import com.sonora.android.adapters.ShoppingListAdapter;
+import com.sonora.android.models.ShoppingList;
+
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +42,8 @@ public class ShoppingListFragment extends Fragment {
         ButterKnife.bind(this, root);
 
         // TODO: Pull data, create data structure to pass to adapter
-        mRecyclerView.setAdapter(new ShoppingListAdapter());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(new ShoppingListAdapter(new ShoppingList(new JSONObject())));
 
         return root;
     }

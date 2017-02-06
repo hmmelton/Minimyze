@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/quarter_standard_margin">
+
+    <CheckBox
+        android:id="@+id/cell_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:id="@+id/cell_count_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/cell_check"
+        android:text="lbs"/>
+
+    <EditText
+        android:id="@+id/cell_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:maxLength="4"
+        android:inputType="numberDecimal"
+        android:layout_toLeftOf="@id/cell_count_type"
+        android:text="6"/>
+
+    <TextView
+        android:id="@+id/cell_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:labelFor="@id/cell_et"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/cell_et"
+        android:text="Some food item"
+        android:textSize="10pt"/>
+
+</RelativeLayout>
