@@ -13,14 +13,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.sonora.android.R;
-import com.sonora.android.adapters.ShoppingListAdapter;
-import com.sonora.android.models.ShoppingList;
-
-import org.json.JSONObject;
+import com.sonora.android.adapters.ShoppingListSection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
 /**
  * Created by harrisonmelton on 2/4/17.
@@ -51,8 +49,15 @@ public class ShoppingListFragment extends Fragment {
         ButterKnife.bind(this, root);
 
         // TODO: Pull data, create data structure to pass to adapter
+        // Create an instance of SectionedRecyclerViewAdapter
+        SectionedRecyclerViewAdapter sectionAdapter = new SectionedRecyclerViewAdapter();
+
+        // Add your Sections
+        sectionAdapter.addSection(new ShoppingListSection("Beverages"));
+        sectionAdapter.addSection(new ShoppingListSection("Bakery"));
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(new ShoppingListAdapter(new ShoppingList(new JSONObject())));
+        mRecyclerView.setAdapter(sectionAdapter);
 
         return root;
     }
