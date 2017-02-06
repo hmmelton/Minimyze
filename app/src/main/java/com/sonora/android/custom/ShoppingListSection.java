@@ -1,4 +1,4 @@
-package com.sonora.android.adapters;
+package com.sonora.android.custom;
 
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
