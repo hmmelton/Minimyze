@@ -48,9 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Add tab icons
         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_home);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_folder);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_receipt);
-        mTabLayout.getTabAt(3).setIcon(R.drawable.ic_person);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.ic_folder);
+        mTabLayout.getTabAt(3).setIcon(R.drawable.ic_receipt);
+        mTabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
     }
 
     @Override
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         // Add fragments
         // TODO: Replace with unique fragments
         adapter.addFragment(FeedFragment.newInstance()); // Home
+        adapter.addFragment(FeedFragment.newInstance()); // Search
         adapter.addFragment(MenusFragment.newInstance()); // User Menus
         adapter.addFragment(ShoppingListFragment.newInstance()); // User Shopping Lists
         adapter.addFragment(FeedFragment.newInstance()); // Profile

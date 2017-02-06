@@ -12,6 +12,8 @@
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
                    android:value="@string/facebook_app_id"/>
+        <meta-data android:name="com.sonora.android.custom.GlideConfiguration"
+                   android:value="GlideModule"/>
 
         <activity
             android:name=".MainActivity"

@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.sonora.android.R;
-import com.sonora.android.adapters.ShoppingListSection;
+import com.sonora.android.custom.ShoppingListSection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
