@@ -19,4 +19,8 @@
     <!-- Error strings -->
     <string name="google_sign_in_error">Error signing in with Google</string>
     <string name="image_retrieval_error">Error retrieving image</string>
+
+    <!-- Menus Fragment Strings -->
+    <string name="featured_menus">Featured Menus</string>
+    <string name="my_menus">My Menus</string>
 </resources>

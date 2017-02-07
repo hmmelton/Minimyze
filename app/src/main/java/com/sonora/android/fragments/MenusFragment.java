@@ -1,18 +1,18 @@
 package com.sonora.android.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.sonora.android.R;
-import com.sonora.android.interfaces.OnImageRetrievedListener;
-import com.sonora.android.utils.FirebaseImageUtil;
+import com.sonora.android.adapters.FeaturedMenusAdapter;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -21,6 +21,9 @@ import butterknife.ButterKnife;
  */
 
 public class MenusFragment extends Fragment {
+
+    @BindView(R.id.menus_featured_recycler) RecyclerView mFeaturedRecycler;
+    @BindView(R.id.menus_saved_recycler) RecyclerView mSavedRecycler;
 
     // Static method for constructing fragment
     public static MenusFragment newInstance() {
@@ -35,20 +38,9 @@ public class MenusFragment extends Fragment {
         // Initialize Butter Knife
         ButterKnife.bind(this, root);
 
-        FirebaseImageUtil.getImageReference(new OnImageRetrievedListener() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // URI fetched successfully, so load it into ImageView
-
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-                // URI was not fetched, so notify user
-                Toast.makeText(getContext(), R.string.image_retrieval_error, Toast.LENGTH_LONG)
-                        .show();
-            }
-        });
+        mFeaturedRecycler.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+        mFeaturedRecycler.setAdapter(new FeaturedMenusAdapter(null));
 
         return root;
     }

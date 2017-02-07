@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This is used as a placeholder image for menu tiles -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/shopping_list_header_text"/>
+        </shape>
+    </item>
+    <item android:left="@dimen/placeholder_image_padding"
+          android:right="@dimen/placeholder_image_padding"
+          android:top="@dimen/placeholder_image_padding"
+          android:bottom="@dimen/placeholder_image_padding">
+        <bitmap android:src="@drawable/ic_local_dining"/>
+    </item>
+</layer-list>
