@@ -17,6 +17,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -32,7 +33,13 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.sonora.android.animations.ChangeWeightAnimation;
+import com.sonora.android.models.User;
+import com.sonora.android.utils.FirebaseUtil;
+import com.sonora.android.utils.JsonUtil;
 
 import java.util.Arrays;
 
@@ -139,7 +146,6 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
             } else {
                 // Sign in failed
                 Toast.makeText(this, GOOGLE_SIGN_IN_ERROR, Toast.LENGTH_LONG).show();
-                Log.e(TAG, String.format("result failure: %s, %s, %s, %s", result, result.getStatus(), result.getSignInAccount(), result.getStatus().getStatusCode()));
             }
         }
         // Required by Facebook SDK
@@ -258,7 +264,37 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                         Toast.makeText(SplashscreenActivity.this, "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        login();
+                        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        FirebaseUtil.getUserById(id, new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                // Data retrieved
+                                if (dataSnapshot.getValue() == null) {
+                                    // This is a first-time user
+                                    GraphRequest request = GraphRequest.newMeRequest(token,
+                                            (object, response) -> {
+                                                User user = JsonUtil.createNewUser(object);
+                                                if (user != null) {
+                                                    FirebaseUtil.uploadUser(user);
+                                                    login();
+                                                }
+                                            });
+                                    Bundle parameters = new Bundle();
+                                    parameters.putString("fields", "id,first_name,last_name");
+                                    request.setParameters(parameters);
+                                    request.executeAsync();
+                                } else {
+                                    User user = dataSnapshot.getValue(User.class);
+                                    Log.d(TAG, user.toString());
+                                    login();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, databaseError.toString());
+                            }
+                        });
                     }
                 });
     }

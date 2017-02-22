@@ -5,6 +5,8 @@ import com.sonora.android.utils.JsonUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by harrisonmelton on 2/6/17.
  * This is a model for an individual recipe.
@@ -16,7 +18,12 @@ public class Recipe {
     private String uid, firstName, lastName;
     private String name;
     private String imageUrl;
-    private String[] instructions, ingredients, tags;
+    private List<String> instructions, tags;
+    private List<ListItem> ingredients;
+    private boolean featured = false;
+
+    // Empty constructor required for reading from Firebase
+    public Recipe() {}
 
     // Constructor
     public Recipe(JSONObject json) {
@@ -27,9 +34,10 @@ public class Recipe {
             this.lastName = json.getString("last_name");
             this.name = json.getString("name");
             this.imageUrl = json.getString("image");
-            this.instructions = JsonUtil.arrayToStringArray(json.getJSONArray("instructions"));
-            this.ingredients = JsonUtil.arrayToStringArray(json.getJSONArray("ingredients"));
-            this.tags = JsonUtil.arrayToStringArray(json.getJSONArray("tags"));
+            this.instructions = JsonUtil.arrayToStringList(json.getJSONArray("instructions"));
+            this.ingredients = JsonUtil.arrayToListItemList(json.getJSONArray("ingredients"));
+            this.tags = JsonUtil.arrayToStringList(json.getJSONArray("tags"));
+            this.featured = json.getBoolean("featured");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -61,15 +69,15 @@ public class Recipe {
         return imageUrl;
     }
 
-    public String[] getInstructions() {
+    public List<String> getInstructions() {
         return instructions;
     }
 
-    public String[] getIngredients() {
+    public List<ListItem> getIngredients() {
         return ingredients;
     }
 
-    public String[] getTags() {
+    public List<String> getTags() {
         return tags;
     }
 }

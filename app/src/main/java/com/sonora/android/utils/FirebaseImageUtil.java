@@ -13,9 +13,11 @@ import com.sonora.android.interfaces.OnImageRetrievedListener;
 
 public class FirebaseImageUtil {
 
+    @SuppressWarnings("unused")
     private static final String TAG = "FirebaseImageUtil";
+
     private static final String STORAGE_ROOT =
-            SonoraApplication.getInstance().getResources().getString(R.string.firbase_storage_root);
+            SonoraApplication.getInstance().getResources().getString(R.string.firebase_storage_root);
 
     public static void getImageReference(OnImageRetrievedListener callback) {
         // Get reference to root

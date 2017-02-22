@@ -5,6 +5,8 @@ import com.sonora.android.utils.JsonUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by harrisonmelton on 2/6/17.
  * This is a model for a menu (collection of recipes).
@@ -16,8 +18,12 @@ public class Menu {
     private String uid;
     private String imageUrl, userProfileImageUrl;
     private String name;
-    private long[] appetizers, entrees, sides, desserts, drinks;
-    private String[] tags;
+    private List<Long> appetizers, entrees, sides, desserts, drinks;
+    private List<String> tags;
+    private boolean featured = false;
+
+    // Empty constructor required for reading from Firebase
+    public Menu() {}
 
     // Constructor
     public Menu(JSONObject json) {
@@ -28,12 +34,12 @@ public class Menu {
             this.userProfileImageUrl = json.getString("user_prof_image");
             this.name = json.getString("name");
             JSONObject recipes = json.getJSONObject("recipes");
-            this.appetizers = JsonUtil.arrayToLongArray(recipes.getJSONArray("appetizers"));
-            this.entrees = JsonUtil.arrayToLongArray(recipes.getJSONArray("entrees"));
-            this.sides = JsonUtil.arrayToLongArray(recipes.getJSONArray("sides"));
-            this.desserts = JsonUtil.arrayToLongArray(recipes.getJSONArray("desserts"));
-            this.drinks = JsonUtil.arrayToLongArray(recipes.getJSONArray("drinks"));
-            this.tags = JsonUtil.arrayToStringArray(recipes.getJSONArray("tags"));
+            this.appetizers = JsonUtil.arrayToLongList(recipes.getJSONArray("appetizers"));
+            this.entrees = JsonUtil.arrayToLongList(recipes.getJSONArray("entrees"));
+            this.sides = JsonUtil.arrayToLongList(recipes.getJSONArray("sides"));
+            this.desserts = JsonUtil.arrayToLongList(recipes.getJSONArray("desserts"));
+            this.drinks = JsonUtil.arrayToLongList(recipes.getJSONArray("drinks"));
+            this.tags = JsonUtil.arrayToStringList(recipes.getJSONArray("tags"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -61,27 +67,27 @@ public class Menu {
         return name;
     }
 
-    public long[] getAppetizers() {
+    public List<Long> getAppetizers() {
         return appetizers;
     }
 
-    public long[] getEntrees() {
+    public List<Long> getEntrees() {
         return entrees;
     }
 
-    public long[] getSides() {
+    public List<Long> getSides() {
         return sides;
     }
 
-    public long[] getDesserts() {
+    public List<Long> getDesserts() {
         return desserts;
     }
 
-    public long[] getDrinks() {
+    public List<Long> getDrinks() {
         return drinks;
     }
 
-    public String[] getTags() {
+    public List<String> getTags() {
         return tags;
     }
 }
