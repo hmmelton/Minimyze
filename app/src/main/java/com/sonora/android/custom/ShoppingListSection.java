@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sonora.android.R;
-import com.sonora.android.models.ListItem;
+import com.sonora.android.models.Ingredient;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class ShoppingListSection extends StatelessSection {
 
-    private List<ListItem> mItems; // TODO: set this in constructor
+    private List<Ingredient> mItems; // TODO: set this in constructor
     private String mTitle;
 
     public ShoppingListSection(String title) {

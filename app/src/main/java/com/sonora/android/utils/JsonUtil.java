@@ -2,7 +2,8 @@ package com.sonora.android.utils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.sonora.android.models.ListItem;
+import com.sonora.android.models.Ingredient;
+import com.sonora.android.models.Recipe;
 import com.sonora.android.models.User;
 
 import org.json.JSONArray;
@@ -52,16 +53,33 @@ public class JsonUtil {
     }
 
     /**
-     * This method converts a JSONArray to a List of ListItems.
+     * This method converts a JSONArray to a List of Recipes.
      * @param json JSONArray to be converted
-     * @return newly created ListItem list
+     * @return newly created Recipe list
      * @throws JSONException thrown if there is an error fetching an item from the JSONArray.
      */
-    public static List<ListItem> arrayToListItemList(JSONArray json) throws JSONException {
-        List<ListItem> result = new ArrayList<>();
+    public static List<Recipe> arrayToRecipeList(JSONArray json) throws JSONException {
+        List<Recipe> result = new ArrayList<>();
 
         for (int i = 0; i < json.length(); i++) {
-            result.add(new ListItem(json.getJSONObject(i)));
+            // Add a new Recipe to result
+            result.add(new Recipe(json.getJSONObject(i)));
+        }
+
+        return result;
+    }
+
+    /**
+     * This method converts a JSONArray to a List of ListItems.
+     * @param json JSONArray to be converted
+     * @return newly created Ingredient list
+     * @throws JSONException thrown if there is an error fetching an item from the JSONArray.
+     */
+    public static List<Ingredient> arrayToListItemList(JSONArray json) throws JSONException {
+        List<Ingredient> result = new ArrayList<>();
+
+        for (int i = 0; i < json.length(); i++) {
+            result.add(new Ingredient(json.getJSONObject(i)));
         }
 
         return result;

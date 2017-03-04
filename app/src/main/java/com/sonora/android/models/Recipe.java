@@ -1,5 +1,6 @@
 package com.sonora.android.models;
 
+import com.google.gson.annotations.SerializedName;
 import com.sonora.android.utils.JsonUtil;
 
 import org.json.JSONException;
@@ -14,16 +15,26 @@ import java.util.List;
 
 public class Recipe {
 
-    private long id;
-    private String uid, firstName, lastName;
-    private String name;
-    private String imageUrl;
-    private List<String> instructions, tags;
-    private List<ListItem> ingredients;
-    private boolean featured = false;
-
-    // Empty constructor required for reading from Firebase
-    public Recipe() {}
+    @SerializedName("id")
+    long id;
+    @SerializedName("user_id")
+    String uid;
+    @SerializedName("first_name")
+    String firstName;
+    @SerializedName("last_name")
+    String lastName;
+    @SerializedName("name")
+    String name;
+    @SerializedName("image_url")
+    String imageUrl;
+    @SerializedName("instructions")
+    List<String> instructions;
+    @SerializedName("tags")
+    List<String> tags;
+    @SerializedName("ingredients")
+    List<Ingredient> ingredients;
+    @SerializedName("featured")
+    boolean featured = false;
 
     // Constructor
     public Recipe(JSONObject json) {
@@ -73,7 +84,7 @@ public class Recipe {
         return instructions;
     }
 
-    public List<ListItem> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 

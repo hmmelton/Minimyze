@@ -15,16 +15,16 @@ import java.util.List;
 public class ShoppingList {
 
     // Sub-lists
-    private List<ListItem> mBeverages;
-    private List<ListItem> mBakery;
-    private List<ListItem> mCannedAndJarred;
-    private List<ListItem> mDairy;
-    private List<ListItem> mDryAndBaking;
-    private List<ListItem> mFrozen;
-    private List<ListItem> mMeats;
-    private List<ListItem> mProduce;
-    private List<ListItem> mSeafood;
-    private List<ListItem> mSnacks;
+    private List<Ingredient> mBeverages;
+    private List<Ingredient> mBakery;
+    private List<Ingredient> mCannedAndJarred;
+    private List<Ingredient> mDairy;
+    private List<Ingredient> mDryAndBaking;
+    private List<Ingredient> mFrozen;
+    private List<Ingredient> mMeats;
+    private List<Ingredient> mProduce;
+    private List<Ingredient> mSeafood;
+    private List<Ingredient> mSnacks;
 
     /**
      * Constructor
@@ -49,15 +49,15 @@ public class ShoppingList {
     }
 
     /**
-     * This method parses over a given array of items, returning them as a List of ListItem.
+     * This method parses over a given array of items, returning them as a List of Ingredient.
      * @param subList JSONArray to be parsed
      * @return List of objects in passed array, converted to ListItems
      */
-    private List<ListItem> parseJSON(JSONArray subList) {
-        List<ListItem> result = new ArrayList<>();
+    private List<Ingredient> parseJSON(JSONArray subList) {
+        List<Ingredient> result = new ArrayList<>();
         for (int i = 0; i < subList.length(); i++) {
             try {
-                result.add(new ListItem(subList.getJSONObject(i)));
+                result.add(new Ingredient(subList.getJSONObject(i)));
             } catch (JSONException e) {
                 // Problem with JSON parsing
                 e.printStackTrace();
@@ -78,43 +78,43 @@ public class ShoppingList {
 
     // Getter methods
 
-    public List<ListItem> getBakery() {
+    public List<Ingredient> getBakery() {
         return mBakery;
     }
 
-    public List<ListItem> getBeverages() {
+    public List<Ingredient> getBeverages() {
         return mBeverages;
     }
 
-    public List<ListItem> getCannedAndJarred() {
+    public List<Ingredient> getCannedAndJarred() {
         return mCannedAndJarred;
     }
 
-    public List<ListItem> getDairy() {
+    public List<Ingredient> getDairy() {
         return mDairy;
     }
 
-    public List<ListItem> getDryAndBaking() {
+    public List<Ingredient> getDryAndBaking() {
         return mDryAndBaking;
     }
 
-    public List<ListItem> getFrozen() {
+    public List<Ingredient> getFrozen() {
         return mFrozen;
     }
 
-    public List<ListItem> getMeats() {
+    public List<Ingredient> getMeats() {
         return mMeats;
     }
 
-    public List<ListItem> getProduce() {
+    public List<Ingredient> getProduce() {
         return mProduce;
     }
 
-    public List<ListItem> getSeafood() {
+    public List<Ingredient> getSeafood() {
         return mSeafood;
     }
 
-    public List<ListItem> getSnacks() {
+    public List<Ingredient> getSnacks() {
         return mSnacks;
     }
 }

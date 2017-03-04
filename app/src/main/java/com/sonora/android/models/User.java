@@ -30,7 +30,7 @@ public class User {
             this.lastName = json.getString("last_name");
             this.email = json.getString("email");
             this.bio = json.getString("bio");
-            this.profileImageUrl = json.getString("prof_image");
+            this.profileImageUrl = json.getString("prof_image_url");
             this.publicRecipes = JsonUtil.arrayToLongList(json.getJSONArray("public_recipes"));
             this.privateRecipes = JsonUtil.arrayToLongList(json.getJSONArray("private_recipes"));
             this.menus = JsonUtil.arrayToLongList(json.getJSONArray("menus"));
