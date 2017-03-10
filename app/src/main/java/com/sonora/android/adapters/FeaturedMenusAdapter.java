@@ -1,6 +1,5 @@
 package com.sonora.android.adapters;
 
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sonora.android.R;
-import com.sonora.android.interfaces.OnImageRetrievedListener;
 import com.sonora.android.models.Menu;
-import com.sonora.android.utils.FirebaseImageUtil;
 import com.sonora.android.views.SquareImageView;
 
 import java.util.List;
@@ -43,20 +40,10 @@ public class FeaturedMenusAdapter extends RecyclerView.Adapter<FeaturedMenusAdap
     @Override
     public void onBindViewHolder(FeaturedMenusAdapter.ViewHolder holder, int position) {
         // TODO: set image and title in here
-        FirebaseImageUtil.getImageReference(new OnImageRetrievedListener() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(holder.imageView.getContext())
-                        .load(uri)
-                        .placeholder(R.drawable.menu_placeholder)
-                        .into(holder.imageView);
-            }
-
-            @Override
-            public void onFailure(Exception exception) {
-
-            }
-        });
+        Glide.with(holder.imageView.getContext())
+                .load(R.drawable.menu_placeholder) // TODO: put real image here
+                .placeholder(R.drawable.menu_placeholder)
+                .into(holder.imageView);
     }
 
     @Override

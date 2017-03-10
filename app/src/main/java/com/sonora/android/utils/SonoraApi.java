@@ -1,21 +1,22 @@
 package com.sonora.android.utils;
 
-import com.sonora.android.R;
-import com.sonora.android.SonoraApplication;
 import com.sonora.android.models.PostResponse;
 import com.sonora.android.models.Recipe;
+import com.sonora.android.models.User;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.DELETE;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -25,15 +26,6 @@ import retrofit2.http.Query;
  */
 
 public interface SonoraApi {
-
-    // Base URL for API
-    String BASE_URL =
-            SonoraApplication.getInstance().getString(R.string.heroku_base_url);
-    // Retrofit instance
-    Retrofit mRetrofit = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
 
     /* Recipe Methods */
 
@@ -77,4 +69,34 @@ public interface SonoraApi {
      */
     @GET("recipes/{user_id}")
     Call<List<Recipe>> getRecipesByUser(@Path("user_id") String userId);
+
+    /* User Methods */
+
+    /**
+     * This method queries the database for a user.
+     * @param Id ID of user to be queried
+     * @return User
+     */
+    @GET("user")
+    Call<User> getUser(@Query("id") String Id);
+
+    /**
+     * The method signs in a user, or registers him/her if no user currently exists
+     * @param authId ID used to authenticate user
+     * @param authProvider provider type (currently FB or GGL)
+     * @param email new user's email address
+     * @param firstName new user's first name
+     * @param lastName new user's last name
+     * @return newly created User
+     */
+    @POST("sign_in")
+    Call<User> signIn(@Query("auth_id") String authId, @Query("auth_provider") String authProvider,
+                      @Query("email") String email, @Query("first_name") String firstName,
+                      @Query("last_name") String lastName);
+
+    /* Photo Methods */
+
+    @Multipart
+    @POST("photo")
+    Call<PostResponse> postImage(@Part MultipartBody.Part image, @Part("name") RequestBody name);
 }

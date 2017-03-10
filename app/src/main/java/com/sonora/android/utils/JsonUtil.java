@@ -1,14 +1,10 @@
 package com.sonora.android.utils;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.sonora.android.models.Ingredient;
 import com.sonora.android.models.Recipe;
-import com.sonora.android.models.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,31 +80,4 @@ public class JsonUtil {
 
         return result;
     }
-
-    /**
-     * This method creates and returns a new User.  It is used when a user first creates his/her
-     * account.
-     * @param json JSONObject containing information of user to be created
-     * @return newly created user
-     */
-    public static User createNewUser(JSONObject json) {
-        // Get ID and email of current user from Firebase
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String id = user.getUid();
-        String email = user.getEmail();
-
-        try {
-            // Pull name from JSON
-            String firstName = json.getString("first_name");
-            String lastName = json.getString("last_name");
-
-            // Return newly created user
-            return new User(id, firstName, lastName, email);
-        } catch (JSONException e) {
-            // There was an error parsing the JSON
-            e.printStackTrace();
-            return null;
-        }
-    }
-
 }

@@ -1,11 +1,12 @@
 package com.sonora.android.models;
 
+import com.google.gson.annotations.SerializedName;
 import com.sonora.android.utils.JsonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,19 +14,47 @@ import java.util.List;
  * This is a model class for users.
  */
 
-public class User {
+public class User implements Serializable {
 
-    private String id;
-    private String firstName, lastName, email, bio;
-    private String profileImageUrl;
-    private List<Long> publicRecipes, privateRecipes, menus;
-    private boolean isPrivate;
-    private List<Long> followers, following;
+    @SerializedName("id")
+    String id;
+    @SerializedName("facebook_id")
+    String facebookId;
+    @SerializedName("google_id")
+    String googleId;
+    @SerializedName("first_name")
+    String firstName;
+    @SerializedName("last_name")
+    String lastName;
+    @SerializedName("email")
+    String email;
+    @SerializedName("bio")
+    String bio;
+    @SerializedName("prof_image_url")
+    String profileImageUrl;
+    @SerializedName("public_recipes")
+    List<Long> publicRecipes;
+    @SerializedName("private_recipes")
+    List<Long> privateRecipes;
+    @SerializedName("menus")
+    List<Long> menus;
+    @SerializedName("is_private")
+    boolean isPrivate;
+    @SerializedName("followers")
+    List<String> followers;
+    @SerializedName("following")
+    List<String> following;
+    @SerializedName("date_created")
+    String dateCreated;
+    @SerializedName("date_modified")
+    String dateModified;
 
-    // Constructor
+    // Constructor used when pulling from database
     public User(JSONObject json) {
         try {
             this.id = json.getString("id");
+            this.facebookId = json.getString("facebook_id");
+            this.googleId = json.getString("google_id");
             this.firstName = json.getString("first_name");
             this.lastName = json.getString("last_name");
             this.email = json.getString("email");
@@ -35,30 +64,13 @@ public class User {
             this.privateRecipes = JsonUtil.arrayToLongList(json.getJSONArray("private_recipes"));
             this.menus = JsonUtil.arrayToLongList(json.getJSONArray("menus"));
             this.isPrivate = json.getBoolean("is_private");
-            this.followers = JsonUtil.arrayToLongList(json.getJSONArray("num_followers"));
-            this.following = JsonUtil.arrayToLongList(json.getJSONArray("num_following"));
+            this.followers = JsonUtil.arrayToStringList(json.getJSONArray("num_followers"));
+            this.following = JsonUtil.arrayToStringList(json.getJSONArray("num_following"));
+            this.dateCreated = json.getString("date_created");
+            this.dateModified = json.getString("date_modified");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    // Empty constructor required for reading from Firebase
-    public User() {}
-
-    // Constructor used when creating account
-    public User(String id, String firstName, String lastName, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.bio = null;
-        this.profileImageUrl = null;
-        this.publicRecipes = new ArrayList<>();
-        this.privateRecipes = new ArrayList<>();
-        this.menus = new ArrayList<>();
-        this.isPrivate = false;
-        this.followers = new ArrayList<>();
-        this.following = new ArrayList<>();
     }
 
     // Getter methods
@@ -99,11 +111,11 @@ public class User {
         return isPrivate;
     }
 
-    public List<Long> getFollowers() {
+    public List<String> getFollowers() {
         return followers;
     }
 
-    public List<Long> getFollowing() {
+    public List<String> getFollowing() {
         return following;
     }
 }

@@ -35,6 +35,10 @@ public class Recipe {
     List<Ingredient> ingredients;
     @SerializedName("featured")
     boolean featured = false;
+    @SerializedName("date_created")
+    String dateCreated;
+    @SerializedName("date_modified")
+    String dateModified;
 
     // Constructor
     public Recipe(JSONObject json) {
@@ -49,6 +53,8 @@ public class Recipe {
             this.ingredients = JsonUtil.arrayToListItemList(json.getJSONArray("ingredients"));
             this.tags = JsonUtil.arrayToStringList(json.getJSONArray("tags"));
             this.featured = json.getBoolean("featured");
+            this.dateCreated = json.getString("date_created");
+            this.dateModified = json.getString("date_modified");
         } catch (JSONException e) {
             e.printStackTrace();
         }

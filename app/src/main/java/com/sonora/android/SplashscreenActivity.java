@@ -28,18 +28,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.sonora.android.animations.ChangeWeightAnimation;
 import com.sonora.android.models.User;
-import com.sonora.android.utils.FirebaseUtil;
-import com.sonora.android.utils.JsonUtil;
+import com.sonora.android.utils.SharedPrefsUtil;
+
+import org.json.JSONException;
 
 import java.util.Arrays;
 
@@ -47,6 +40,9 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -82,8 +78,6 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
 
     private final String TAG = getClass().getSimpleName();
     private CallbackManager mCallbackManager;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -93,23 +87,10 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         setContentView(R.layout.activity_splashscreen);
         ButterKnife.bind(this);
 
-        // Initialize Firebase Facebook login
-        this.mAuth = FirebaseAuth.getInstance();
         // Initialize Facebook login
         initFacebookLogin();
         // Initialize Google login
         initGoogleLogin();
-        // Initialize Firebase mAuth listener
-        mAuthListener = firebaseAuth -> {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                // User is signed in
-                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-            } else {
-                // User is signed out
-                Log.d(TAG, "onAuthStateChanged:signed_out");
-            }
-        };
 
         // Note that some of these constants are new as of API 16 (Jelly Bean)
         // and API 19 (KitKat). It is safe to use them, as they are inlined
@@ -123,7 +104,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
 
         new Handler().postDelayed(() -> {
             // After displaying splash screen,
-            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            if (SharedPrefsUtil.getUser() == null) {
                 // User has not yet logged in
                 showLogin();
             } else {
@@ -142,7 +123,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                // TODO: Login with Google
             } else {
                 // Sign in failed
                 Toast.makeText(this, GOOGLE_SIGN_IN_ERROR, Toast.LENGTH_LONG).show();
@@ -150,20 +131,6 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         }
         // Required by Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     @Override
@@ -211,7 +178,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        handleFacebookAccessToken(loginResult.getAccessToken());
+                        makeFBGraphRequest(loginResult.getAccessToken());
                     }
 
                     @Override
@@ -224,6 +191,49 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                         Log.e(TAG, error.toString());
                     }
                 });
+    }
+
+    /**
+     *
+     * @param token
+     */
+    private void makeFBGraphRequest(AccessToken token) {
+        GraphRequest request = GraphRequest.newMeRequest(
+                token,
+                (object, response) -> {
+                    try {
+                        // Pull values from JSONObject
+                        String email = object.getString("email");
+                        String firstName = object.getString("first_name");
+                        String lastName = object.getString("last_name");
+
+                        // Login with API
+                        Call<User> req = SonoraApplication.getApi().signIn(token.getUserId(),
+                                "facebook", email, firstName, lastName);
+                        // Make call
+                        req.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                if (response.code() == 200) {
+                                    // All went well -- save user and log in
+                                    SharedPrefsUtil.saveUser(response.body());
+                                    login();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                                Log.e(TAG, "login error", t);
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "first_name,last_name,email");
+        request.setParameters(parameters);
+        request.executeAsync();
     }
 
     /**
@@ -244,85 +254,6 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-    }
-
-    /**
-     * This method uses a Facebook access token to sign the user into Firebase.
-     * @param token Facebook AccessToken used to sign in user
-     */
-    private void handleFacebookAccessToken(AccessToken token) {
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the mAuth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener.
-                    if (!task.isSuccessful()) {
-                        Log.w(TAG, "signInWithCredential", task.getException());
-                        Toast.makeText(SplashscreenActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                        FirebaseUtil.getUserById(id, new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                // Data retrieved
-                                if (dataSnapshot.getValue() == null) {
-                                    // This is a first-time user
-                                    GraphRequest request = GraphRequest.newMeRequest(token,
-                                            (object, response) -> {
-                                                User user = JsonUtil.createNewUser(object);
-                                                if (user != null) {
-                                                    FirebaseUtil.uploadUser(user);
-                                                    login();
-                                                }
-                                            });
-                                    Bundle parameters = new Bundle();
-                                    parameters.putString("fields", "id,first_name,last_name");
-                                    request.setParameters(parameters);
-                                    request.executeAsync();
-                                } else {
-                                    User user = dataSnapshot.getValue(User.class);
-                                    Log.d(TAG, user.toString());
-                                    login();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                Log.e(TAG, databaseError.toString());
-                            }
-                        });
-                    }
-                });
-    }
-
-    /**
-     * This method uses a Google sign in account to sign the user into Firebase.
-     * @param acct GoogleSignInAccount used to sign user in
-     */
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, task -> {
-                    Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the auth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener.
-                    if (!task.isSuccessful()) {
-                        Log.w(TAG, "signInWithCredential", task.getException());
-                        Toast.makeText(SplashscreenActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Login was successful
-                        login();
-                    }
-                });
     }
 
     /**
