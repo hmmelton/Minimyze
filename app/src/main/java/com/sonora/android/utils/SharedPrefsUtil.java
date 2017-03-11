@@ -41,4 +41,12 @@ public class SharedPrefsUtil {
         String json = mPrefs.getString(USER_KEY, null);
         return json == null ? null : mGson.fromJson(json, User.class);
     }
+
+    /**
+     * This method signs the current user out of local storage.
+     */
+    public static void signOut() {
+        mEditor.remove(USER_KEY);
+        mEditor.commit();
+    }
 }

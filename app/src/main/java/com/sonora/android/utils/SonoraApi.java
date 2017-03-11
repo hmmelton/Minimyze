@@ -92,7 +92,7 @@ public interface SonoraApi {
     @POST("sign_in")
     Call<User> signIn(@Query("auth_id") String authId, @Query("auth_provider") String authProvider,
                       @Query("email") String email, @Query("first_name") String firstName,
-                      @Query("last_name") String lastName);
+                      @Query("last_name") String lastName, @Query("prof_image_url") String profImg);
 
     /* Photo Methods */
 

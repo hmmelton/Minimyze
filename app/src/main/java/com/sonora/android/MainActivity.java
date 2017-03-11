@@ -16,6 +16,7 @@ import com.facebook.login.LoginManager;
 import com.sonora.android.fragments.FeedFragment;
 import com.sonora.android.fragments.MenusFragment;
 import com.sonora.android.fragments.ShoppingListFragment;
+import com.sonora.android.utils.SharedPrefsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_sign_out:
                 LoginManager.getInstance().logOut();
+                SharedPrefsUtil.signOut();
                 startActivity(new Intent(this, SplashscreenActivity.class));
                 // Override for smooth transition
                 overridePendingTransition(0, 0);

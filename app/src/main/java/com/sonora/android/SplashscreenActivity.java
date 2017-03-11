@@ -194,7 +194,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
     }
 
     /**
-     *
+     * This method calls the Facebook Graph API
      * @param token
      */
     private void makeFBGraphRequest(AccessToken token) {
@@ -206,10 +206,13 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                         String email = object.getString("email");
                         String firstName = object.getString("first_name");
                         String lastName = object.getString("last_name");
+                        String profileUrl = object.getJSONObject("picture")
+                                .getJSONObject("data")
+                                .getString("url");
 
-                        // Login with API
+                       // Login with API
                         Call<User> req = SonoraApplication.getApi().signIn(token.getUserId(),
-                                "facebook", email, firstName, lastName);
+                                "facebook", email, firstName, lastName, profileUrl);
                         // Make call
                         req.enqueue(new Callback<User>() {
                             @Override
@@ -231,7 +234,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "first_name,last_name,email");
+        parameters.putString("fields", "first_name,last_name,email,picture.type(large)");
         request.setParameters(parameters);
         request.executeAsync();
     }
