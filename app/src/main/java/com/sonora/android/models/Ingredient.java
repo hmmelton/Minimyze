@@ -18,7 +18,7 @@ public class Ingredient {
     @SerializedName("id")
     String id;
     @SerializedName("count")
-    int count; // Number of item
+    double count; // Number of item
     @SerializedName("name")
     String itemName;
     @SerializedName("count_type")
@@ -33,7 +33,7 @@ public class Ingredient {
     public Ingredient(JSONObject json) {
         try {
             this.id = json.getString("id");
-            this.count = json.getInt("count");
+            this.count = json.getDouble("count");
             this.itemName = json.getString("name");
             this.countType = json.getString("count_type");
             this.category = json.getString("category");
@@ -43,7 +43,7 @@ public class Ingredient {
     }
 
     // Getter methods
-    public int getCount() {
+    public double getCount() {
         return count;
     }
 

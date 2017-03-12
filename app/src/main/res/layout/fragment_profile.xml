@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/profile_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorAccent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/profile_image_width"
+                android:layout_height="@dimen/profile_image_width"
+                android:layout_margin="@dimen/standard_margin"/>
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profile_image"
+                android:layout_marginLeft="@dimen/standard_margin"
+                android:layout_marginBottom="@dimen/standard_margin"
+                android:textColor="@android:color/white"/>
+
+            <ImageView
+                android:id="@+id/user_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/quarter_standard_margin"
+                android:src="@drawable/ic_settings"/>
+            
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/user_name"
+                android:layout_toLeftOf="@id/user_settings"
+                android:layout_toRightOf="@id/profile_image"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:layout_alignTop="@id/profile_image"
+                android:weightSum="3">
+                
+                <LinearLayout
+                    android:id="@+id/user_posts_section"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/user_posts"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/recipes"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_followers_section"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/user_followers"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/followers"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_following_section"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/user_following"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/following"
+                        android:textColor="@android:color/white"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_recipes_grid"
+            android:layout_below="@id/profile_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:numColumns="3"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/profile_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:layout_margin="@dimen/standard_margin"
+            android:src="@drawable/ic_add"
+            app:fabSize="normal"/>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>

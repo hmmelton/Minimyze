@@ -7,6 +7,8 @@
     <color name="black_overlay">#66000000</color>
 
     <color name="tab_unselected">#999999</color>
+    
+    <color name="light_gray">#c3c3c3</color>
 
     <color name="shopping_list_header_text">#545454</color>
 </resources>

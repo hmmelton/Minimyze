@@ -23,4 +23,10 @@
     <!-- Menus Fragment Strings -->
     <string name="featured_menus">Featured Menus</string>
     <string name="my_menus">My Menus</string>
+
+    <!-- Profile Fragment Strings -->
+    <string name="recipes">recipes</string>
+    <string name="followers">followers</string>
+    <string name="following">following</string>
+    <string name="update_user_error">There was an error fetching recipes</string>
 </resources>

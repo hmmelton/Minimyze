@@ -16,7 +16,7 @@ import java.util.List;
 public class Recipe {
 
     @SerializedName("id")
-    long id;
+    String id;
     @SerializedName("user_id")
     String uid;
     @SerializedName("first_name")
@@ -43,7 +43,7 @@ public class Recipe {
     // Constructor
     public Recipe(JSONObject json) {
         try {
-            this.id = json.getLong("id");
+            this.id = json.getString("id");
             this.uid = json.getString("uid");
             this.firstName = json.getString("first_name");
             this.lastName = json.getString("last_name");
@@ -62,7 +62,7 @@ public class Recipe {
 
     // Getter methods
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 

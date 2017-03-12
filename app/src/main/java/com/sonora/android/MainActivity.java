@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.facebook.login.LoginManager;
 import com.sonora.android.fragments.FeedFragment;
 import com.sonora.android.fragments.MenusFragment;
+import com.sonora.android.fragments.ProfileFragment;
 import com.sonora.android.fragments.ShoppingListFragment;
 import com.sonora.android.utils.SharedPrefsUtil;
 
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(FeedFragment.newInstance()); // Search
         adapter.addFragment(MenusFragment.newInstance()); // User Menus
         adapter.addFragment(ShoppingListFragment.newInstance()); // User Shopping Lists
-        adapter.addFragment(FeedFragment.newInstance()); // Profile
+        adapter.addFragment(ProfileFragment.newInstance()); // Profile
         viewPager.setAdapter(adapter);
     }
 

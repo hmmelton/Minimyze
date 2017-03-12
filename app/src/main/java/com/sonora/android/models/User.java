@@ -33,9 +33,9 @@ public class User implements Serializable {
     @SerializedName("prof_image_url")
     String profileImageUrl;
     @SerializedName("public_recipes")
-    List<Long> publicRecipes;
+    List<String> publicRecipes;
     @SerializedName("private_recipes")
-    List<Long> privateRecipes;
+    List<String> privateRecipes;
     @SerializedName("menus")
     List<Long> menus;
     @SerializedName("is_private")
@@ -60,8 +60,8 @@ public class User implements Serializable {
             this.email = json.getString("email");
             this.bio = json.getString("bio");
             this.profileImageUrl = json.getString("prof_image_url");
-            this.publicRecipes = JsonUtil.arrayToLongList(json.getJSONArray("public_recipes"));
-            this.privateRecipes = JsonUtil.arrayToLongList(json.getJSONArray("private_recipes"));
+            this.publicRecipes = JsonUtil.arrayToStringList(json.getJSONArray("public_recipes"));
+            this.privateRecipes = JsonUtil.arrayToStringList(json.getJSONArray("private_recipes"));
             this.menus = JsonUtil.arrayToLongList(json.getJSONArray("menus"));
             this.isPrivate = json.getBoolean("is_private");
             this.followers = JsonUtil.arrayToStringList(json.getJSONArray("num_followers"));
@@ -95,11 +95,11 @@ public class User implements Serializable {
         return profileImageUrl;
     }
 
-    public List<Long> getPublicRecipes() {
+    public List<String> getPublicRecipes() {
         return publicRecipes;
     }
 
-    public List<Long> getPrivateRecipes() {
+    public List<String> getPrivateRecipes() {
         return privateRecipes;
     }
 

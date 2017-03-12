@@ -23,6 +23,11 @@ public class SquareImageView extends ImageView {
         this.byHeight = true;
     }
 
+    public SquareImageView(Context context, boolean byHeight) {
+        this(context);
+        this.byHeight = byHeight;
+    }
+
     public SquareImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         getAttributes(context, attrs, 0, 0);

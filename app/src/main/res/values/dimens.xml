@@ -19,6 +19,9 @@
     <dimen name="quarter_standard_margin">4dp</dimen>
 
     <dimen name="login_button_width">300dp</dimen>
+    <dimen name="profile_image_width">64dp</dimen>
+
+    <dimen name="item_spacing">2dp</dimen>
 
     <dimen name="placeholder_image_padding">20dp</dimen>
 </resources>
