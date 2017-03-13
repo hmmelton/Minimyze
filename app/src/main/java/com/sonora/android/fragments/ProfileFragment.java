@@ -1,6 +1,8 @@
 package com.sonora.android.fragments;
 
+import android.animation.Animator;
 import android.content.res.ColorStateList;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -9,9 +11,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +29,7 @@ import com.sonora.android.adapters.RecipesGridAdapter;
 import com.sonora.android.custom.SpacesItemDecoration;
 import com.sonora.android.models.Recipe;
 import com.sonora.android.models.User;
+import com.sonora.android.utils.AnimationUtil;
 import com.sonora.android.utils.SharedPrefsUtil;
 
 import java.util.ArrayList;
@@ -33,6 +41,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.codetail.animation.ViewAnimationUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,17 +70,44 @@ public class ProfileFragment extends Fragment {
     RecyclerView mRecipesGrid;
     @BindView(R.id.profile_action_button)
     FloatingActionButton mFab;
+    @BindView(R.id.add_recipe_layout)
+    RelativeLayout mAddLayout;
     SwipeRefreshLayout mContent;
 
     /* Actions */
 
     // FAB OnClick handler
     @OnClick(R.id.profile_action_button)
-    void onFabClick() {
-        // TODO: create and upload new recipe
+    void onFabClick(View v) {
+        // Get screen dimensions
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        // Android native animator
+        Animator revealAnimation = ViewAnimationUtils.createCircularReveal(mAddLayout, size.x,
+                size.y, 0, (float) Math.hypot(size.x, size.y));
+        revealAnimation.setInterpolator(new DecelerateInterpolator());
+        revealAnimation.setDuration(500);
+
+        // FAB translation animation
+        AnimationUtil.translateAnimation(v, v.getWidth() / 2, v.getHeight() / 2,
+                new TranslateAnimation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {}
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mAddLayout.setVisibility(View.VISIBLE);
+                        revealAnimation.start();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                }, 250);
     }
 
-    /* Resources */
+    /* Dimens */
     @BindDimen(R.dimen.item_spacing)
     int itemSpacing;
 
