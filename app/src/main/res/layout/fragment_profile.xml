@@ -139,26 +139,6 @@
 
         </RelativeLayout>
 
-        <com.sonora.android.views.CircleView
-
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/standard_margin"
-            app:cv_color="?colorPrimary"
-            app:cv_byHeight="true"/>
-
-        <RelativeLayout
-            android:id="@+id/add_recipe_layout"
-            android:background="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal">
-
-        </RelativeLayout>
-
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/profile_action_button"
             android:layout_width="wrap_content"
@@ -167,7 +147,6 @@
             android:clickable="true"
             android:layout_margin="@dimen/standard_margin"
             android:src="@drawable/ic_add"
-            android:visibility="gone"
             app:fabSize="normal"/>
 
     </io.codetail.widget.RevealFrameLayout>

@@ -29,4 +29,6 @@
     <string name="followers">followers</string>
     <string name="following">following</string>
     <string name="update_user_error">There was an error fetching recipes</string>
+    <string name="add_recipe">Add Recipe</string>
+    <string name="close">CLOSE</string>
 </resources>

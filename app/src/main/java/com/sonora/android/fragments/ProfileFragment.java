@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,7 +92,9 @@ public class ProfileFragment extends Fragment {
         revealAnimation.setDuration(500);
 
         // FAB translation animation
-        AnimationUtil.translateAnimation(v, v.getWidth() / 2, v.getHeight() / 2,
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
+        AnimationUtil.translateAnimation(v, v.getWidth() + params.leftMargin + params.rightMargin,
+                v.getHeight() + params.topMargin + params.bottomMargin,
                 new TranslateAnimation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {}
