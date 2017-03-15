@@ -1,5 +1,6 @@
 package com.sonora.android.fragments;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,12 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.sonora.android.AddRecipeActivity;
 import com.sonora.android.R;
 import com.sonora.android.SonoraApplication;
 import com.sonora.android.adapters.RecipesGridAdapter;
 import com.sonora.android.custom.SpacesItemDecoration;
 import com.sonora.android.models.Recipe;
 import com.sonora.android.models.User;
+import com.sonora.android.utils.Constants;
 import com.sonora.android.utils.SharedPrefsUtil;
 
 import java.util.ArrayList;
@@ -68,7 +71,9 @@ public class ProfileFragment extends Fragment {
     // FAB OnClick handler
     @OnClick(R.id.profile_action_button)
     void onFabClick() {
-
+        // Navigate to add recipe page
+        Intent intent = new Intent(getActivity(), AddRecipeActivity.class);
+        startActivityForResult(intent, Constants.ADD_RECIPE_INTENT);
     }
 
     /* Dimens */

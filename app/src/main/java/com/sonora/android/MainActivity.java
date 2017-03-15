@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,6 +18,7 @@ import com.sonora.android.fragments.FeedFragment;
 import com.sonora.android.fragments.MenusFragment;
 import com.sonora.android.fragments.ProfileFragment;
 import com.sonora.android.fragments.ShoppingListFragment;
+import com.sonora.android.utils.Constants;
 import com.sonora.android.utils.SharedPrefsUtil;
 
 import java.util.ArrayList;
@@ -27,6 +29,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    @SuppressWarnings("unused")
+    private final String TAG = getClass().getSimpleName();
+
     // Views
     @BindView(R.id.toolbar) protected Toolbar mToolbar;
     @BindView(R.id.pager) protected ViewPager mPager;
@@ -36,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "onCreate");
 
         // Initialize Butter Knife for the activity
         ButterKnife.bind(this);
@@ -53,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_folder);
         mTabLayout.getTabAt(3).setIcon(R.drawable.ic_receipt);
         mTabLayout.getTabAt(4).setIcon(R.drawable.ic_person);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.ADD_RECIPE_INTENT) {
+            // Coming from add recipe page
+            mPager.setCurrentItem(4); // Navigate to profile tab
+        }
     }
 
     @Override
