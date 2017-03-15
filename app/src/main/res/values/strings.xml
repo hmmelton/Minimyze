@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">Sonora</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="title_activity_splashscreen">Splashscreen</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -31,4 +28,7 @@
     <string name="update_user_error">There was an error fetching recipes</string>
     <string name="add_recipe">Add Recipe</string>
     <string name="close">CLOSE</string>
+
+    <!-- Add Recipe Strings -->
+    <string name="title_add_recipe_activity">Add Recipe</string>
 </resources>
