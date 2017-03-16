@@ -9,6 +9,62 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sonora.android.AddRecipeActivity">
+    tools:context="com.sonora.android.AddRecipeActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/recipe_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recipe name:"
+        android:textSize="10pt"/>
+
+    <EditText
+        android:id="@+id/recipe_name_et"
+        android:layout_below="@id/recipe_name_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textCapWords"
+        android:maxLines="1"/>
+
+    <TextView
+        android:id="@+id/add_image_tv"
+        android:layout_below="@id/recipe_name_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Image:"
+        android:textSize="10pt"/>
+
+    <com.sonora.android.views.SquareRelativeLayout
+        android:id="@+id/add_image_layout"
+        android:layout_below="@id/add_image_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_standard_margin"
+        android:background="?colorPrimary"
+        app:byHeight="false">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <com.sonora.android.views.SquareImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_camera"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Add Photo"
+                android:textColor="@android:color/white"
+                android:textSize="10pt"/>
+
+        </LinearLayout>
+
+    </com.sonora.android.views.SquareRelativeLayout>
 
 </RelativeLayout>

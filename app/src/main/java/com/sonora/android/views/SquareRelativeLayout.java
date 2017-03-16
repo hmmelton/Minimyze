@@ -5,36 +5,36 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.sonora.android.R;
 
 /**
- * Created by harrisonmelton on 2/6/17.
- * This is a custom ImageView class that forces the view into a square shape.
+ * Created by harrisonmelton on 3/15/17.
+ * This is a square RelativeLayout
  */
 
-public class SquareImageView extends ImageView {
+public class SquareRelativeLayout extends RelativeLayout {
 
     private boolean byHeight;
 
-    public SquareImageView(Context context) {
+    public SquareRelativeLayout(Context context) {
         super(context);
         this.byHeight = true;
     }
 
-    public SquareImageView(Context context, AttributeSet attrs) {
+    public SquareRelativeLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         getAttributes(context, attrs, 0, 0);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SquareRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         getAttributes(context, attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SquareImageView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SquareRelativeLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         getAttributes(context, attrs, defStyleAttr, defStyleRes);
     }
