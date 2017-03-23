@@ -19,9 +19,6 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class AddRecipeActivity extends AppCompatActivity {
 
@@ -94,9 +91,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         File file = new File(String.valueOf(getPath(uri)));
         // Build body
         Log.d(TAG, getPath(uri));
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
         // TODO: make API request
     }

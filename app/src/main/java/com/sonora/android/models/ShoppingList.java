@@ -26,6 +26,9 @@ public class ShoppingList {
     private List<Ingredient> mSeafood;
     private List<Ingredient> mSnacks;
 
+    // Empty constructor required by Firebase
+    public ShoppingList() {}
+
     /**
      * Constructor
      * @param json JSON Object holding information for an entire shopping list

@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.facebook.login.LoginManager;
 import com.sonora.android.fragments.FeedFragment;
 import com.sonora.android.fragments.MenusFragment;
 import com.sonora.android.fragments.ProfileFragment;
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 return true;
             case R.id.action_sign_out:
-                LoginManager.getInstance().logOut();
                 SharedPrefsUtil.signOut();
                 startActivity(new Intent(this, SplashscreenActivity.class));
                 // Override for smooth transition

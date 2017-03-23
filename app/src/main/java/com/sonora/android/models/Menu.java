@@ -1,6 +1,5 @@
 package com.sonora.android.models;
 
-import com.google.gson.annotations.SerializedName;
 import com.sonora.android.utils.JsonUtil;
 
 import org.json.JSONException;
@@ -15,34 +14,23 @@ import java.util.List;
 
 public class Menu {
 
-    @SerializedName("id")
     String id;
-    @SerializedName("user_id")
     String uid;
-    @SerializedName("image_url")
     String imageUrl;
-    @SerializedName("prof_image")
     String userProfileImageUrl;
-    @SerializedName("name")
     String name;
-    @SerializedName("appetizers")
     List<Recipe> appetizers;
-    @SerializedName("entrees")
     List<Recipe> entrees;
-    @SerializedName("sides")
     List<Recipe> sides;
-    @SerializedName("desserts")
     List<Recipe> desserts;
-    @SerializedName("beverages")
     List<Recipe> beverages;
-    @SerializedName("tags")
     List<String> tags;
-    @SerializedName("featured")
     boolean featured = false;
-    @SerializedName("date_created")
     String dateCreated;
-    @SerializedName("date_modified")
     String dateModified;
+
+    // Empty constructor required by Firebase
+    public Menu() {}
 
     // Constructor
     public Menu(JSONObject json) {

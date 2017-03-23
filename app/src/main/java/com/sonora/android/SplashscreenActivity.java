@@ -13,11 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -28,11 +26,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.sonora.android.animations.ChangeWeightAnimation;
-import com.sonora.android.models.User;
+import com.sonora.android.interfaces.OnCompleteListener;
+import com.sonora.android.utils.AuthUtil;
 import com.sonora.android.utils.SharedPrefsUtil;
-
-import org.json.JSONException;
 
 import java.util.Arrays;
 
@@ -40,9 +41,6 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -72,13 +70,16 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private final int LOGIN_ANIMATION_TIME = 600;
-    private final int SPLASHSCREEN_WAIT_TIME = 1000;
+    // Code used for Google sign in intent
     private final int RC_SIGN_IN = 0;
 
     private final String TAG = getClass().getSimpleName();
+
+    // Third-party goToLoginPage helpers
     private CallbackManager mCallbackManager;
     private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +88,23 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         setContentView(R.layout.activity_splashscreen);
         ButterKnife.bind(this);
 
-        // Initialize Facebook login
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                // User is signed in
+                Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+            } else {
+                // User is signed out
+                Log.d(TAG, "onAuthStateChanged:signed_out");
+            }
+        };
+
+        // Initialize Facebook goToLoginPage
         initFacebookLogin();
-        // Initialize Google login
+        // Initialize Google goToLoginPage
         initGoogleLogin();
 
         // Note that some of these constants are new as of API 16 (Jelly Bean)
@@ -102,6 +117,8 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
+        final int SPLASHSCREEN_WAIT_TIME = 1000;
+
         new Handler().postDelayed(() -> {
             // After displaying splash screen,
             if (SharedPrefsUtil.getUser() == null) {
@@ -109,7 +126,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
                 showLogin();
             } else {
                 // User is already logged in, so go to main screen
-                login();
+                goToLoginPage();
             }
         }, SPLASHSCREEN_WAIT_TIME);
     }
@@ -134,6 +151,20 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // Connection failed -- alert user
         Toast.makeText(this, GOOGLE_SIGN_IN_ERROR, Toast.LENGTH_LONG).show();
@@ -141,9 +172,10 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
     }
 
     /**
-     * This method animates the logo section and the login section heights.
+     * This method animates the logo section and the goToLoginPage section heights.
      */
     private void showLogin() {
+        final int LOGIN_ANIMATION_TIME = 600;
         DecelerateInterpolator interpolator = new DecelerateInterpolator();
 
         // Create animation for logo section
@@ -151,7 +183,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         logoAnim.setDuration(LOGIN_ANIMATION_TIME);
         logoAnim.setInterpolator(interpolator);
 
-        // Create animation for login section
+        // Create animation for goToLoginPage section
         ChangeWeightAnimation loginAnim = new ChangeWeightAnimation(mLoginContentView, 0, 4);
         loginAnim.setDuration(LOGIN_ANIMATION_TIME);
         loginAnim.setInterpolator(interpolator);
@@ -169,16 +201,48 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
     }
 
     /**
-     * This method initializes the Facebook login process.
+     * This method initializes the Facebook goToLoginPage process.
      */
     private void initFacebookLogin() {
+        Log.e(TAG, "initFacebook");
         mCallbackManager = CallbackManager.Factory.create();
         // Register callback for later use
         LoginManager.getInstance().registerCallback(mCallbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        makeFBGraphRequest(loginResult.getAccessToken());
+                        Log.e(TAG, "fb success");
+                        AuthCredential credential = FacebookAuthProvider
+                                .getCredential(loginResult.getAccessToken().getToken());
+                        mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                // Handle login or user creation
+                                AuthUtil.handleFacebookLogin(loginResult.getAccessToken(),
+                                        new OnCompleteListener() {
+                                    @Override
+                                    public void complete(boolean result) {
+                                        // Login successful -- go to main page
+                                        Log.e(TAG, "auth util complete");
+                                        goToLoginPage();
+                                    }
+
+                                    @Override
+                                    public void error(String message) {
+                                        Log.e(TAG, "auth util error");
+                                        // Login error
+                                        Toast.makeText(SplashscreenActivity.this, message,
+                                                Toast.LENGTH_LONG).show();
+                                        mAuth.signOut();
+                                    }
+                                });
+                            } else {
+                                // Authentication failed
+                                Log.e(TAG, "fb error");
+                                Toast.makeText(SplashscreenActivity.this, R.string.auth_failure,
+                                        Toast.LENGTH_LONG).show();
+                                mAuth.signOut();
+                            }
+                        });
                     }
 
                     @Override
@@ -194,53 +258,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
     }
 
     /**
-     * This method calls the Facebook Graph API
-     * @param token
-     */
-    private void makeFBGraphRequest(AccessToken token) {
-        GraphRequest request = GraphRequest.newMeRequest(
-                token,
-                (object, response) -> {
-                    try {
-                        // Pull values from JSONObject
-                        String email = object.getString("email");
-                        String firstName = object.getString("first_name");
-                        String lastName = object.getString("last_name");
-                        String profileUrl = object.getJSONObject("picture")
-                                .getJSONObject("data")
-                                .getString("url");
-
-                       // Login with API
-                        Call<User> req = SonoraApplication.getApi().signIn(token.getUserId(),
-                                "facebook", email, firstName, lastName, profileUrl);
-                        // Make call
-                        req.enqueue(new Callback<User>() {
-                            @Override
-                            public void onResponse(Call<User> call, Response<User> response) {
-                                if (response.code() == 200) {
-                                    // All went well -- save user and log in
-                                    SharedPrefsUtil.saveUser(response.body());
-                                    login();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<User> call, Throwable t) {
-                                Log.e(TAG, "login error", t);
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "first_name,last_name,email,picture.type(large)");
-        request.setParameters(parameters);
-        request.executeAsync();
-    }
-
-    /**
-     * This method initializes the Google login process.
+     * This method initializes the Google goToLoginPage process.
      */
     private void initGoogleLogin() {
         // Configure Google Sign In
@@ -262,7 +280,7 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
     /**
      * This method logs the user into the application.
      */
-    private void login() {
+    private void goToLoginPage() {
         startActivity(new Intent(SplashscreenActivity.this, MainActivity.class));
         overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         finish();

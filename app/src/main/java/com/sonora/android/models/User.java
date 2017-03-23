@@ -1,10 +1,6 @@
 package com.sonora.android.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.sonora.android.utils.JsonUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.List;
@@ -49,34 +45,28 @@ public class User implements Serializable {
     @SerializedName("date_modified")
     String dateModified;
 
+    // Empty constructor required by Firebase
+    public User() {}
+
     // Constructor used when pulling from database
-    public User(JSONObject json) {
-        try {
-            this.id = json.getString("id");
-            this.facebookId = json.getString("facebook_id");
-            this.googleId = json.getString("google_id");
-            this.firstName = json.getString("first_name");
-            this.lastName = json.getString("last_name");
-            this.email = json.getString("email");
-            this.bio = json.getString("bio");
-            this.profileImageUrl = json.getString("prof_image_url");
-            this.publicRecipes = JsonUtil.arrayToStringList(json.getJSONArray("public_recipes"));
-            this.privateRecipes = JsonUtil.arrayToStringList(json.getJSONArray("private_recipes"));
-            this.menus = JsonUtil.arrayToLongList(json.getJSONArray("menus"));
-            this.isPrivate = json.getBoolean("is_private");
-            this.followers = JsonUtil.arrayToStringList(json.getJSONArray("num_followers"));
-            this.following = JsonUtil.arrayToStringList(json.getJSONArray("num_following"));
-            this.dateCreated = json.getString("date_created");
-            this.dateModified = json.getString("date_modified");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public User(String id, String email, String firstName, String lastName,
+                String profileImageUrl) {
+        this.id = id;
+
     }
 
-    // Getter methods
+    // Getter and setter methods
 
     public String getId() {
         return id;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
     }
 
     public String getFirstName() {

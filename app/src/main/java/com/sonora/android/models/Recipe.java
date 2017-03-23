@@ -1,6 +1,5 @@
 package com.sonora.android.models;
 
-import com.google.gson.annotations.SerializedName;
 import com.sonora.android.utils.JsonUtil;
 
 import org.json.JSONException;
@@ -15,30 +14,21 @@ import java.util.List;
 
 public class Recipe {
 
-    @SerializedName("id")
     String id;
-    @SerializedName("user_id")
     String uid;
-    @SerializedName("first_name")
     String firstName;
-    @SerializedName("last_name")
     String lastName;
-    @SerializedName("name")
     String name;
-    @SerializedName("image_url")
     String imageUrl;
-    @SerializedName("instructions")
     List<String> instructions;
-    @SerializedName("tags")
     List<String> tags;
-    @SerializedName("ingredients")
     List<Ingredient> ingredients;
-    @SerializedName("featured")
     boolean featured = false;
-    @SerializedName("date_created")
     String dateCreated;
-    @SerializedName("date_modified")
     String dateModified;
+
+    // Empty constructor required by Firebase
+    public Recipe() {}
 
     // Constructor
     public Recipe(JSONObject json) {

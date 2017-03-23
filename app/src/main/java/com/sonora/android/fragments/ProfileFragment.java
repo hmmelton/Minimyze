@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +16,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.sonora.android.AddRecipeActivity;
 import com.sonora.android.R;
-import com.sonora.android.SonoraApplication;
 import com.sonora.android.adapters.RecipesGridAdapter;
 import com.sonora.android.custom.SpacesItemDecoration;
-import com.sonora.android.models.Recipe;
 import com.sonora.android.models.User;
 import com.sonora.android.utils.Constants;
+import com.sonora.android.utils.DatabaseUtil;
 import com.sonora.android.utils.SharedPrefsUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindDimen;
@@ -36,11 +37,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.sonora.android.SonoraApplication.getApi;
 
 /**
  * Created by harrisonmelton on 3/11/17.
@@ -116,23 +112,23 @@ public class ProfileFragment extends Fragment {
      * This method fetches the currently-logged-in user from the database.
      */
     private void getCurrentUserInfo() {
-        Call<User> request = SonoraApplication.getApi().getUser(SharedPrefsUtil.getUser().getId());
-        request.enqueue(new Callback<User>() {
+        DatabaseUtil.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                new ValueEventListener() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
                 mContent.setRefreshing(false);
                 // Save potentially-updated user to local storage
-                SharedPrefsUtil.saveUser(response.body());
+                SharedPrefsUtil.saveUser(user);
                 // Repopulate views with new info
-                populateViews(response.body());
+                populateViews(user);
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onCancelled(DatabaseError databaseError) {
                 // There was an error -- alert user
                 mContent.setRefreshing(false);
-                Toast.makeText(getContext(), R.string.update_user_error, Toast.LENGTH_LONG).show();
-                Log.e(TAG, "error updating user", t);
+                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -155,24 +151,7 @@ public class ProfileFragment extends Fragment {
         mUserFollowing.setText(String.format("%s", user.getFollowing().size()));
 
         // Make call to API to fetch current user's recipes
-        Call<List<Recipe>> request = getApi().getRecipesByUser(user.getId());
-        request.enqueue(new Callback<List<Recipe>>() {
-            @Override
-            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
-                // Recipes pulled successfully -- update adapter
-                ((RecipesGridAdapter) mRecipesGrid.getAdapter()).setRecipes(response.body());
-                mContent.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                // There was an error -- notify user
-                mContent.setRefreshing(false);
-                Toast.makeText(getContext(), R.string.update_user_error, Toast.LENGTH_LONG).show();
-                Log.e(TAG, user.getId());
-                Log.e(TAG, t.getMessage());
-            }
-        });
+        // TODO: get recipes by user id
     }
 
     /**

@@ -5,8 +5,6 @@ package com.sonora.android.models;
  * This is a data model for a recipe/shopping list ingredient.
  */
 
-import com.google.gson.annotations.SerializedName;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,16 +13,14 @@ import org.json.JSONObject;
  */
 public class Ingredient {
 
-    @SerializedName("id")
     String id;
-    @SerializedName("count")
     double count; // Number of item
-    @SerializedName("name")
     String itemName;
-    @SerializedName("count_type")
     String countType;
-    @SerializedName("category")
     String category; // Name of item and count type (gallon, pound, etc.)
+
+    // Empty constructor required by Firebase
+    public Ingredient() {}
 
     /**
      * Constructor
