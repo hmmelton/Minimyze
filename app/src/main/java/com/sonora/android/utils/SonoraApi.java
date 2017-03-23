@@ -6,17 +6,13 @@ import com.sonora.android.models.User;
 
 import java.util.List;
 
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -93,10 +89,4 @@ public interface SonoraApi {
     Call<User> signIn(@Query("auth_id") String authId, @Query("auth_provider") String authProvider,
                       @Query("email") String email, @Query("first_name") String firstName,
                       @Query("last_name") String lastName, @Query("prof_image_url") String profImg);
-
-    /* Photo Methods */
-
-    @Multipart
-    @POST("photo")
-    Call<PostResponse> postImage(@Part MultipartBody.Part image, @Part("name") RequestBody name);
 }

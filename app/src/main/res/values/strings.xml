@@ -31,4 +31,5 @@
 
     <!-- Add Recipe Strings -->
     <string name="title_add_recipe_activity">Add Recipe</string>
+    <string name="add_recipe_image">Add recipe image</string>
 </resources>

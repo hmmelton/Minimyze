@@ -1,70 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     android:id="@+id/activity_add_recipe"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sonora.android.AddRecipeActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/recipe_name_tv"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Recipe name:"
-        android:textSize="10pt"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/recipe_name_et"
-        android:layout_below="@id/recipe_name_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textCapWords"
-        android:maxLines="1"/>
+        <com.sonora.android.views.SquareRelativeLayout
+            android:id="@+id/add_image_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorAccent"
+            android:focusable="true"
+            app:byHeight="false"
+            android:clickable="true">
+            <requestFocus />
 
-    <TextView
-        android:id="@+id/add_image_tv"
-        android:layout_below="@id/recipe_name_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Image:"
-        android:textSize="10pt"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
 
-    <com.sonora.android.views.SquareRelativeLayout
-        android:id="@+id/add_image_layout"
-        android:layout_below="@id/add_image_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/half_standard_margin"
-        android:background="?colorPrimary"
-        app:byHeight="false">
+                <com.sonora.android.views.SquareImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_camera"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Add Photo"
+                    android:textColor="@android:color/white"
+                    android:textSize="10pt"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/add_image_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/add_recipe_image"/>
+        </com.sonora.android.views.SquareRelativeLayout>
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <com.sonora.android.views.SquareImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_camera"/>
+            android:layout_margin="@dimen/standard_margin">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Add Photo"
-                android:textColor="@android:color/white"
+                android:text="Recipe name:"
                 android:textSize="10pt"/>
 
+            <EditText
+                android:id="@+id/recipe_name_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords"
+                android:maxLines="1"/>
+
         </LinearLayout>
+        
+    </LinearLayout>
 
-    </com.sonora.android.views.SquareRelativeLayout>
-
-</RelativeLayout>
+</ScrollView>
