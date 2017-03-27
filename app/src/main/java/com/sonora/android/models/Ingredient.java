@@ -42,6 +42,12 @@ public class Ingredient {
         }
     }
 
+    public Ingredient(String itemName, double count, String countType) {
+        this.itemName = itemName;
+        this.count = count;
+        this.countType = countType;
+    }
+
     // Getter methods
     public double getCount() {
         return count;

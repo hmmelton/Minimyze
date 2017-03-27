@@ -7,16 +7,29 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.sonora.android.adapters.IngredientsListAdapter;
+import com.sonora.android.models.Ingredient;
+import com.sonora.android.models.Recipe;
+import com.sonora.android.utils.DatabaseImageUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import butterknife.BindArray;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,9 +44,43 @@ public class AddRecipeActivity extends AppCompatActivity {
 
     private final int PICK_IMAGE_REQUEST = 1;
 
+    /* Resources */
+    @BindString(R.string.error_ingredient_info)
+    String mIngredientError;
+    @BindString(R.string.error_instruction_info)
+    String mInstructionError;
+    @BindString(R.string.error_tag_info)
+    String mTagError;
+    @BindString(R.string.error_recipe_info)
+    String mRecipeError;
+
+    /* Views */
     @BindView(R.id.add_image_iv)
     ImageView mRecipeImage;
-    // OnClickListener for add image section
+    @BindView(R.id.et_recipe_name)
+    EditText mNewRecipeName;
+    // Ingredient views
+    @BindView(R.id.et_ingredient_name)
+    EditText mNewIngredientName;
+    @BindView(R.id.et_ingredient_count)
+    EditText mNewIngredientCount;
+    @BindView(R.id.spinner_ingredient)
+    Spinner mNewIngredientSpinner;
+    @BindView(R.id.rv_new_recipe_ingredients)
+    RecyclerView mNewIngredientsRecycler;
+    // Instruction views
+    @BindView(R.id.et_instruction_name)
+    EditText mNewInstructionName;
+    @BindView(R.id.rv_new_recipe_instructions)
+    RecyclerView mNewInstructionsRecycler;
+    // Tag views
+    @BindView(R.id.et_tag_name)
+    EditText mNewTagName;
+    @BindView(R.id.rv_new_recipe_tags)
+    RecyclerView mNewTagsRecycler;
+
+    /* OnClick Listeners */
+    // Add image section
     @OnClick(R.id.add_image_layout)
     void onAddImageClick() {
         Intent intent = new Intent();
@@ -43,6 +90,36 @@ public class AddRecipeActivity extends AppCompatActivity {
         // Show picker in case multiple options are available
         startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
     }
+
+    // Add ingredient
+    @OnClick(R.id.button_add_ingredient)
+    void onAddIngredientClick() {
+        if (mNewIngredientName.getText().length() == 0 ||
+                mNewIngredientCount.getText().length() == 0) {
+            // One or more empty fields
+            Toast.makeText(AddRecipeActivity.this, mIngredientError, Toast.LENGTH_LONG).show();
+        } else {
+            // Gather ingredient info
+            String ingredientName = mNewIngredientName.getText().toString();
+            String ingredientCountType = mNewIngredientSpinner.getSelectedItem().toString();
+            double ingredientCount;
+            try {
+                ingredientCount = Double.valueOf(mNewIngredientCount.getText().toString());
+            } catch (Exception e) {
+                // Error parsing to double
+                e.printStackTrace();
+                return;
+            }
+            // Create new ingredient
+            Ingredient ingredient =
+                    new Ingredient(ingredientName, ingredientCount, ingredientCountType);
+            // Add ingredient to adapter
+            ((IngredientsListAdapter) mNewIngredientsRecycler.getAdapter())
+                    .addIngredient(ingredient);
+        }
+    }
+
+    /* Methods */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +132,14 @@ public class AddRecipeActivity extends AppCompatActivity {
 
         // Add back button and title to action bar
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(R.string.title_add_recipe_activity);
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.title_add_recipe_activity);
+        }
+
+        // Set up views with adapters
+        initSpinner();
+        initRecyclerViews();
     }
 
     @Override
@@ -71,7 +154,7 @@ public class AddRecipeActivity extends AppCompatActivity {
             // Upload image to database
             // TODO: This should be in OnClick for submit button
             try {
-                uploadImageToDatabase(uri);
+                DatabaseImageUtil.uploadImageToDatabase(uri, getContentResolver());
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage());
             }
@@ -90,33 +173,28 @@ public class AddRecipeActivity extends AppCompatActivity {
     }
 
     /**
-     * This method uploads an image to the database.
-     * @param uri Uri of image in device
+     * This method sets up the Activity's various RecyclerViews.
      */
-    private void uploadImageToDatabase(Uri uri) throws IOException {
-        // Create file from image
-        File file = new File(String.valueOf(getPath(uri)));
-        // Build body
-        Log.d(TAG, getPath(uri));
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
-
-        // TODO: make API request
+    private void initRecyclerViews() {
+        // Set adapter for
+        LinearLayoutManager ingredientLLM =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        IngredientsListAdapter ingredientAdapter = new IngredientsListAdapter(new ArrayList<>());
+        mNewIngredientsRecycler.setLayoutManager(ingredientLLM);
+        mNewIngredientsRecycler.setAdapter(ingredientAdapter);
     }
 
     /**
-     * This method gets the absolute path of a uri
-     * @param uri Uri whose path is being fetched
-     * @return String representation of image's location
+     * This sets up the ingredient Spinner.
      */
-    private String getPath(Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String result = cursor.getString(column_index);
-        cursor.close();
-        return result;
+    private void initSpinner() {
+        // Generate array of options from resources
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.count_types,
+                android.R.layout.simple_spinner_item /* default spinner layout */);
+        // Specify layout to use when list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Set adapter to spinner
+        mNewIngredientSpinner.setAdapter(adapter);
     }
 }

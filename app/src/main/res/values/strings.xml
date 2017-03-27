@@ -32,4 +32,28 @@
     <!-- Add Recipe Strings -->
     <string name="title_add_recipe_activity">Add Recipe</string>
     <string name="add_recipe_image">Add recipe image</string>
+    <string name="recipe_name">Recipe name:</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="tags">Tags:</string>
+    <string name="instructions">Instructions:</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_count">Count</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="add_instruction">Add Instruction</string>
+    <string name="add_tag">Add Tag</string>
+    <string name="button_submit">Submit</string>
+    <string name="error_ingredient_info">Please add all ingredient fields</string>
+    <string name="error_instruction_info">Please add all instruction information</string>
+    <string name="error_tag_info">Please add all tag information</string>
+    <string name="error_recipe_info">Pleasee add all recipe information</string>
+    <string-array name="count_types">
+        <item>cup</item>
+        <item>lb</item>
+        <item>oz</item>
+        <item>pint</item>
+        <item>quart</item>
+        <item>tbsp</item>
+        <item>tsp</item>
+    </string-array>
+
 </resources>

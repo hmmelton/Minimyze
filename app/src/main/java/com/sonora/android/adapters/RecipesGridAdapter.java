@@ -12,6 +12,9 @@ import com.sonora.android.views.SquareImageView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by harrisonmelton on 3/11/17.
  * This is an adapter for the recipes list on the profile page.
@@ -64,11 +67,12 @@ public class RecipesGridAdapter extends RecyclerView.Adapter<RecipesGridAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.item_image_view)
         SquareImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = (SquareImageView) itemView.findViewById(R.id.item_image_view);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
