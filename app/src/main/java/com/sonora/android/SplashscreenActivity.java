@@ -28,9 +28,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.firebase.auth.FirebaseAuth;
 import com.sonora.android.animations.ChangeWeightAnimation;
 import com.sonora.android.models.User;
 import com.sonora.android.utils.SharedPrefsUtil;
+import com.sonora.android.utils.SonoraApi;
 
 import org.json.JSONException;
 
@@ -121,9 +123,10 @@ public class SplashscreenActivity extends AppCompatActivity implements GoogleApi
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google Sign In was successful
                 GoogleSignInAccount account = result.getSignInAccount();
                 // TODO: Login with Google
+                Log.e(TAG, account.getGivenName() + " " + account.getFamilyName());
             } else {
                 // Sign in failed
                 Toast.makeText(this, GOOGLE_SIGN_IN_ERROR, Toast.LENGTH_LONG).show();
