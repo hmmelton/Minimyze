@@ -1,10 +1,8 @@
 package com.sonora.android;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,21 +20,15 @@ import com.bumptech.glide.Glide;
 import com.sonora.android.adapters.IngredientsListAdapter;
 import com.sonora.android.helpers.RecyclerViewHelper;
 import com.sonora.android.models.Ingredient;
-import com.sonora.android.models.Recipe;
 import com.sonora.android.utils.DatabaseImageUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import butterknife.BindArray;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 public class AddRecipeActivity extends AppCompatActivity {
 
@@ -177,15 +169,33 @@ public class AddRecipeActivity extends AppCompatActivity {
      * This method sets up the Activity's various RecyclerViews.
      */
     private void initRecyclerViews() {
-        // Set up Ingredient list RecyclerView
-        LinearLayoutManager ingredientLLM =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        IngredientsListAdapter ingredientAdapter = new IngredientsListAdapter(new ArrayList<>());
-        mNewIngredientsRecycler.setLayoutManager(ingredientLLM);
-        mNewIngredientsRecycler.setAdapter(ingredientAdapter);
+        setAdapters();
+        // Put all RecyclerViews into an array to
+        RecyclerView[] recyclers = new RecyclerView[]{mNewIngredientsRecycler,
+                mNewInstructionsRecycler, mNewTagsRecycler};
 
-        RecyclerViewHelper ingredientHelper = new RecyclerViewHelper(mNewIngredientsRecycler);
-        ingredientHelper.setSwipeToRemoveItems();
+        for (RecyclerView view : recyclers) {
+            // Set up Ingredient list RecyclerView
+            LinearLayoutManager layoutManager =
+                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+            view.setLayoutManager(layoutManager);
+
+            // Create a helper to add UI and functionality elements
+            RecyclerViewHelper helper = new RecyclerViewHelper(view);
+            helper.addSwipeToRemoveItems();
+            helper.addHorizontalSeparatorLines();
+        }
+    }
+
+    /**
+     * This method sets adapters for the Activity's RecyclerViews.
+     */
+    private void setAdapters() {
+        // Adapter for ingredients list
+        IngredientsListAdapter ingredientAdapter = new IngredientsListAdapter(new ArrayList<>());
+        mNewIngredientsRecycler.setAdapter(ingredientAdapter);
+        // TODO: initialize and add adapters for other RecyclerViews
     }
 
     /**

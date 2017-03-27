@@ -3,6 +3,8 @@ package com.sonora.android.helpers;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
+import com.sonora.android.custom.DividerItemDecoration;
+import com.sonora.android.custom.SpacesItemDecoration;
 import com.sonora.android.interfaces.SwipeableRecyclerViewAdapter;
 
 /**
@@ -22,7 +24,7 @@ public class RecyclerViewHelper {
     /**
      * This method adds swipe-to-remove functionality to {@link RecyclerViewHelper#mRecyclerView}
      */
-    public void setSwipeToRemoveItems() {
+    public void addSwipeToRemoveItems() {
         // Create callback for swipes
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -43,5 +45,12 @@ public class RecyclerViewHelper {
         // Create ItemTouchHelper and attach it to RecyclerView
         ItemTouchHelper helper = new ItemTouchHelper(simpleCallback);
         helper.attachToRecyclerView(mRecyclerView);
+    }
+
+    /**
+     * This method adds horizontal lines between RecyclerView items.
+     */
+    public void addHorizontalSeparatorLines() {
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(mRecyclerView.getContext()));
     }
 }

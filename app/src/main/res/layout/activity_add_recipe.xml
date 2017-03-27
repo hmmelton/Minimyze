@@ -120,18 +120,18 @@
                 android:id="@+id/button_add_ingredient"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/half_standard_margin"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:clickable="true"
                 android:text="@string/add_ingredient"
                 android:textColor="@android:color/white"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_new_recipe_ingredients"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_new_recipe_ingredients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -160,12 +160,13 @@
                 android:text="@string/add_instruction"
                 android:textColor="@android:color/white"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_new_recipe_instructions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_new_recipe_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -194,12 +195,13 @@
                 android:text="@string/add_tag"
                 android:textColor="@android:color/white"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_new_recipe_tags"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_new_recipe_tags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/button_new_recipe_submit"
