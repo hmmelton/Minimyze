@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.sonora.android.adapters.IngredientsListAdapter;
+import com.sonora.android.helpers.RecyclerViewHelper;
 import com.sonora.android.models.Ingredient;
 import com.sonora.android.models.Recipe;
 import com.sonora.android.utils.DatabaseImageUtil;
@@ -176,12 +177,15 @@ public class AddRecipeActivity extends AppCompatActivity {
      * This method sets up the Activity's various RecyclerViews.
      */
     private void initRecyclerViews() {
-        // Set adapter for
+        // Set up Ingredient list RecyclerView
         LinearLayoutManager ingredientLLM =
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         IngredientsListAdapter ingredientAdapter = new IngredientsListAdapter(new ArrayList<>());
         mNewIngredientsRecycler.setLayoutManager(ingredientLLM);
         mNewIngredientsRecycler.setAdapter(ingredientAdapter);
+
+        RecyclerViewHelper ingredientHelper = new RecyclerViewHelper(mNewIngredientsRecycler);
+        ingredientHelper.setSwipeToRemoveItems();
     }
 
     /**

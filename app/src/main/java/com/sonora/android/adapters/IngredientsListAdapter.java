@@ -1,6 +1,5 @@
 package com.sonora.android.adapters;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sonora.android.R;
+import com.sonora.android.interfaces.SwipeableRecyclerViewAdapter;
 import com.sonora.android.models.Ingredient;
 
 import java.util.ArrayList;
@@ -22,10 +22,13 @@ import butterknife.ButterKnife;
  * This is an adapter class for a RecyclerView of Ingredient objects.
  */
 
-public class IngredientsListAdapter extends RecyclerView.Adapter<IngredientsListAdapter.ViewHolder> {
+public class IngredientsListAdapter extends RecyclerView.Adapter<IngredientsListAdapter.ViewHolder>
+    implements SwipeableRecyclerViewAdapter {
 
+    // List of ingredients displayed in adapter
     private List<Ingredient> mIngredients;
 
+    // Constructor
     public IngredientsListAdapter(List<Ingredient> ingredients) {
         mIngredients = ingredients;
     }
@@ -74,11 +77,19 @@ public class IngredientsListAdapter extends RecyclerView.Adapter<IngredientsList
         return result;
     }
 
+    @Override
+    public void remove(int position) {
+        // Remove item and notify adapter of its removal
+        mIngredients.remove(position);
+        notifyItemRemoved(position);
+    }
+
     /**
      * View holder class for adapter.
      */
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        // Views
         @BindView(R.id.tv_ingredient_name)
         TextView ingredientName;
         @BindView(R.id.tv_ingredient_count)
@@ -86,6 +97,7 @@ public class IngredientsListAdapter extends RecyclerView.Adapter<IngredientsList
         @BindView(R.id.tv_ingredient_count_type)
         TextView ingredientCountType;
 
+        // Constructor
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
