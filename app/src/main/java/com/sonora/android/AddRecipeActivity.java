@@ -139,7 +139,7 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        Intent intent; //
+        Intent intent; // Create intent to navigate to the appropriate Activity
         switch (clickedItemIndex) {
             case 0:
                 intent = new Intent(AddRecipeActivity.this, AddIngredientsActivity.class);

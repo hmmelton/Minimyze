@@ -73,9 +73,11 @@ public class RecipeCompsAdapter extends RecyclerView.Adapter<RecipeCompsAdapter.
         @BindView(R.id.recipe_comp_title)
         TextView title;
 
+        // Constructor
         ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         @Override
