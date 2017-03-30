@@ -10,7 +10,7 @@
         android:id="@+id/shopping_list_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/shopping_list_header_text"
+        android:textColor="@color/dark_gray"
         android:textSize="10pt"/>
 
 </LinearLayout>

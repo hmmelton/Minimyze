@@ -5,37 +5,36 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.sonora.android.adapters.IngredientsListAdapter;
-import com.sonora.android.helpers.RecyclerViewHelper;
-import com.sonora.android.models.Ingredient;
+import com.sonora.android.adapters.RecipeCompsAdapter;
+import com.sonora.android.interfaces.ListItemClickListener;
+import com.sonora.android.models.Recipe;
 import com.sonora.android.utils.DatabaseImageUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddRecipeActivity extends AppCompatActivity {
+public class AddRecipeActivity extends AppCompatActivity implements ListItemClickListener{
 
     @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
     private final int PICK_IMAGE_REQUEST = 1;
+
+    private Recipe mRecipe;
 
     /* Resources */
     @BindString(R.string.error_ingredient_info)
@@ -52,25 +51,8 @@ public class AddRecipeActivity extends AppCompatActivity {
     ImageView mRecipeImage;
     @BindView(R.id.et_recipe_name)
     EditText mNewRecipeName;
-    // Ingredient views
-    @BindView(R.id.et_ingredient_name)
-    EditText mNewIngredientName;
-    @BindView(R.id.et_ingredient_count)
-    EditText mNewIngredientCount;
-    @BindView(R.id.spinner_ingredient)
-    Spinner mNewIngredientSpinner;
-    @BindView(R.id.rv_new_recipe_ingredients)
-    RecyclerView mNewIngredientsRecycler;
-    // Instruction views
-    @BindView(R.id.et_instruction_name)
-    EditText mNewInstructionName;
-    @BindView(R.id.rv_new_recipe_instructions)
-    RecyclerView mNewInstructionsRecycler;
-    // Tag views
-    @BindView(R.id.et_tag_name)
-    EditText mNewTagName;
-    @BindView(R.id.rv_new_recipe_tags)
-    RecyclerView mNewTagsRecycler;
+    @BindView(R.id.rv_recipe_components)
+    RecyclerView mRecyclerView;
 
     /* OnClick Listeners */
     // Add image section
@@ -82,34 +64,6 @@ public class AddRecipeActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         // Show picker in case multiple options are available
         startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
-    }
-
-    // Add ingredient
-    @OnClick(R.id.button_add_ingredient)
-    void onAddIngredientClick() {
-        if (mNewIngredientName.getText().length() == 0 ||
-                mNewIngredientCount.getText().length() == 0) {
-            // One or more empty fields
-            Toast.makeText(AddRecipeActivity.this, mIngredientError, Toast.LENGTH_LONG).show();
-        } else {
-            // Gather ingredient info
-            String ingredientName = mNewIngredientName.getText().toString();
-            String ingredientCountType = mNewIngredientSpinner.getSelectedItem().toString();
-            double ingredientCount;
-            try {
-                ingredientCount = Double.valueOf(mNewIngredientCount.getText().toString());
-            } catch (Exception e) {
-                // Error parsing to double
-                e.printStackTrace();
-                return;
-            }
-            // Create new ingredient
-            Ingredient ingredient =
-                    new Ingredient(ingredientName, ingredientCount, ingredientCountType);
-            // Add ingredient to adapter
-            ((IngredientsListAdapter) mNewIngredientsRecycler.getAdapter())
-                    .addIngredient(ingredient);
-        }
     }
 
     /* Methods */
@@ -131,8 +85,10 @@ public class AddRecipeActivity extends AppCompatActivity {
         }
 
         // Set up views with adapters
-        initSpinner();
-        initRecyclerViews();
+        initRecyclerView();
+
+        // Initialize recipe to be added
+        mRecipe = new Recipe();
     }
 
     @Override
@@ -168,47 +124,41 @@ public class AddRecipeActivity extends AppCompatActivity {
     /**
      * This method sets up the Activity's various RecyclerViews.
      */
-    private void initRecyclerViews() {
-        setAdapters();
-        // Put all RecyclerViews into an array to
-        RecyclerView[] recyclers = new RecyclerView[]{mNewIngredientsRecycler,
-                mNewInstructionsRecycler, mNewTagsRecycler};
-
-        for (RecyclerView view : recyclers) {
-            // Set up Ingredient list RecyclerView
-            LinearLayoutManager layoutManager =
-                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
-            view.setLayoutManager(layoutManager);
-
-            // Create a helper to add UI and functionality elements
-            RecyclerViewHelper helper = new RecyclerViewHelper(view);
-            helper.addSwipeToRemoveItems();
-            helper.addHorizontalSeparatorLines();
-        }
+    private void initRecyclerView() {
+        // Create adapter and layout manager
+        RecipeCompsAdapter adapter = new RecipeCompsAdapter(this, this);
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        // Set adapter and layout manager to RecyclerView
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(adapter);
+        // Create and add item decoration (divider lines)
+        RecyclerView.ItemDecoration decoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        mRecyclerView.addItemDecoration(decoration);
     }
 
-    /**
-     * This method sets adapters for the Activity's RecyclerViews.
-     */
-    private void setAdapters() {
-        // Adapter for ingredients list
-        IngredientsListAdapter ingredientAdapter = new IngredientsListAdapter(new ArrayList<>());
-        mNewIngredientsRecycler.setAdapter(ingredientAdapter);
-        // TODO: initialize and add adapters for other RecyclerViews
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Intent intent; //
+        switch (clickedItemIndex) {
+            case 0:
+                intent = new Intent(AddRecipeActivity.this, AddIngredientsActivity.class);
+                startActivity(intent);
+            default: break;
+        }
     }
 
     /**
      * This sets up the ingredient Spinner.
      */
-    private void initSpinner() {
+    /*private void initSpinner() {
         // Generate array of options from resources
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.count_types,
-                android.R.layout.simple_spinner_item /* default spinner layout */);
+                android.R.layout.simple_spinner_item /* default spinner layout );
         // Specify layout to use when list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Set adapter to spinner
         mNewIngredientSpinner.setAdapter(adapter);
-    }
+    }*/
 }

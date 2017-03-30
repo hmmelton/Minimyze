@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,17 +54,19 @@ import retrofit2.Response;
 public class SplashscreenActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     // Views
-    @BindView(R.id.fullscreen_content) protected View mContentView;
-    @BindView(R.id.image_icon_content) protected RelativeLayout mLogoContentView;
-    @BindView(R.id.login_content) protected RelativeLayout mLoginContentView;
-    @BindView(R.id.splash_title) protected TextView mTitle;
+    @BindView(R.id.fullscreen_content) View mContentView;
+    @BindView(R.id.image_icon_content) RelativeLayout mLogoContentView;
+    @BindView(R.id.login_content) RelativeLayout mLoginContentView;
+    @BindView(R.id.splash_title) TextView mTitle;
+    @BindView(R.id.login_progress) ProgressBar mProgress;
 
     // String Resources
-    @BindString(R.string.default_web_client_id) protected String WEB_CLIENT_ID;
-    @BindString(R.string.google_sign_in_error) protected String GOOGLE_SIGN_IN_ERROR;
+    @BindString(R.string.default_web_client_id) String WEB_CLIENT_ID;
+    @BindString(R.string.google_sign_in_error) String GOOGLE_SIGN_IN_ERROR;
 
     // OnClickListeners
     @OnClick(R.id.facebook_login) void onFacebookLoginClick() {
+        mProgress.setVisibility(View.VISIBLE);
         // Login with Facebook
         LoginManager.getInstance().logInWithReadPermissions(SplashscreenActivity.this,
                 Arrays.asList("public_profile", "email"));

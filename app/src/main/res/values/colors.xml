@@ -10,5 +10,5 @@
     
     <color name="light_gray">#c3c3c3</color>
 
-    <color name="shopping_list_header_text">#545454</color>
+    <color name="dark_gray">#545454</color>
 </resources>

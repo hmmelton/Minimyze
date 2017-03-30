@@ -3,7 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/shopping_list_header_text"/>
+            <solid android:color="@color/dark_gray"/>
         </shape>
     </item>
     <item android:left="@dimen/placeholder_image_padding"

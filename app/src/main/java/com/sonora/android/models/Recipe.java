@@ -60,6 +60,8 @@ public class Recipe {
         }
     }
 
+    public Recipe() {}
+
     // Getter methods
 
     public String getId() {
