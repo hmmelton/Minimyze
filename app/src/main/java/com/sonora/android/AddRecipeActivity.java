@@ -17,10 +17,12 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.sonora.android.adapters.RecipeCompsAdapter;
 import com.sonora.android.interfaces.ListItemClickListener;
-import com.sonora.android.models.Recipe;
-import com.sonora.android.utils.DatabaseImageUtil;
+import com.sonora.android.interfaces.OnImageRetrievedListener;
+import com.sonora.android.models.Ingredient;
+import com.sonora.android.utils.ImageUtil;
 
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -32,9 +34,17 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
     @SuppressWarnings("unused")
     private final String TAG = getClass().getSimpleName();
 
+    // Request flags
     private final int PICK_IMAGE_REQUEST = 1;
+    private final int ADD_INGREDIENTS_REQUEST = 2;
+    private final int ADD_INSTRUCTIONS_REQUEST = 3;
+    private final int ADD_TAGS_REQUEST = 4;
 
-    private Recipe mRecipe;
+    // New Recipe data
+    private List<Ingredient> mIngredients;
+    private List<String> mInstructions;
+    private List<String> mTags;
+    private Uri mImageUri;
 
     /* Resources */
     @BindString(R.string.error_ingredient_info)
@@ -86,27 +96,15 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
 
         // Set up views with adapters
         initRecyclerView();
-
-        // Initialize recipe to be added
-        mRecipe = new Recipe();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
-            // Get location Uri
-            Uri uri = data.getData();
-            Glide.with(this).load(uri).into(mRecipeImage);
-            // Upload image to database
-            // TODO: This should be in OnClick for submit button
-            try {
-                DatabaseImageUtil.uploadImageToDatabase(uri, getContentResolver());
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage());
-            }
+            // Prepare image for upload
+            prepareImageForUpload(data);
         }
     }
 
@@ -146,6 +144,53 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
                 startActivity(intent);
             default: break;
         }
+    }
+
+    /**
+     * This method prepares an image to be uploaded to the database.
+     * @param data intent containing image Uri
+     */
+    private void prepareImageForUpload(Intent data) {
+        // Get image's Uri
+        Uri uri = data.getData();
+        // Load image into ImageView
+        Glide.with(this).load(uri).into(mRecipeImage);
+        mImageUri = uri;
+    }
+
+    /**
+     * This method uploads an image to the database
+     * @param uri Uri of image to be uploaded
+     */
+    private void uploadImage(Uri uri) {
+        try {
+            // Try to upload image to database
+            ImageUtil.uploadImageToDatabase(uri, getContentResolver(),
+                    new OnImageRetrievedListener() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            // Call successful! Save Uri
+                            mImageUri = uri;
+                        }
+
+                        @Override
+                        public void onFailure(Exception exception) {
+                            // Error!
+                            exception.printStackTrace();
+                        }
+                    });
+        } catch (IOException e) {
+            // IOException occurred -- invalid URI?
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    /**
+     * This method uploads the new recipe.
+     */
+    private void uploadRecipe() {
+        // TODO: upload recipe
+        // TODO: upload recipe
     }
 
     /**

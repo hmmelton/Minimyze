@@ -27,9 +27,9 @@ public class RecipeCompsAdapter extends RecyclerView.Adapter<RecipeCompsAdapter.
     private String[] mComponents;
     // Cell icons
     private final int[] mIcons = new int[]{
-            R.drawable.ic_home,
-            R.drawable.ic_home,
-            R.drawable.ic_home
+            R.drawable.ic_ingredients,
+            R.drawable.ic_instructions,
+            R.drawable.ic_tag
     };
     final private ListItemClickListener mOnClickListener;
 
