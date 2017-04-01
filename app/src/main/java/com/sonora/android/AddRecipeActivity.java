@@ -104,7 +104,7 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
                 && data.getData() != null) {
             // Prepare image for upload
-            prepareImageForUpload(data);
+            displayImage(data);
         }
     }
 
@@ -150,7 +150,7 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
      * This method prepares an image to be uploaded to the database.
      * @param data intent containing image Uri
      */
-    private void prepareImageForUpload(Intent data) {
+    private void displayImage(Intent data) {
         // Get image's Uri
         Uri uri = data.getData();
         // Load image into ImageView
@@ -189,7 +189,6 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
      * This method uploads the new recipe.
      */
     private void uploadRecipe() {
-        // TODO: upload recipe
         // TODO: upload recipe
     }
 
