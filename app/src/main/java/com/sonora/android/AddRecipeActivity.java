@@ -101,10 +101,13 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null
-                && data.getData() != null) {
-            // Prepare image for upload
-            displayImage(data);
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == PICK_IMAGE_REQUEST) {
+                // Display image
+                displayImage(data);
+            } else if (requestCode == ADD_INGREDIENTS_REQUEST) {
+                // TODO: get list of Ingredients, probably from JSON String
+            }
         }
     }
 
@@ -141,7 +144,7 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
         switch (clickedItemIndex) {
             case 0:
                 intent = new Intent(AddRecipeActivity.this, AddIngredientsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ADD_INGREDIENTS_REQUEST);
             default: break;
         }
     }
