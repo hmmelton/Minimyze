@@ -36,7 +36,6 @@
     <string name="add_instruction">Add Instruction</string>
     <string name="add_tag">Add Tag</string>
     <string name="button_submit">Submit</string>
-    <string name="error_ingredient_info">Please add all ingredient fields</string>
     <string name="error_instruction_info">Please add all instruction information</string>
     <string name="error_tag_info">Please add all tag information</string>
     <string name="error_recipe_info">Pleasee add all recipe information</string>
@@ -56,9 +55,12 @@
         <item>Add Tags</item>
     </string-array>
     <string name="recipe_component_image_desc">component icon</string>
+    <string name="add">Add</string>
 
     <!-- Add Ingredient Strings -->
     <string name="hint_name">Name</string>
     <string name="hint_count">Count</string>
     <string name="title_add_ingredients">Add Ingredients</string>
+    <string name="error_ingredient_info">Please add all ingredient fields</string>
+    <string name="error_ingredient_count_parse">Ingredient count not recognized</string>
 </resources>

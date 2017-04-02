@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sonora.android.adapters.RecipeCompsAdapter;
 import com.sonora.android.interfaces.ListItemClickListener;
 import com.sonora.android.interfaces.OnImageRetrievedListener;
@@ -22,6 +24,7 @@ import com.sonora.android.models.Ingredient;
 import com.sonora.android.utils.ImageUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.BindString;
@@ -82,18 +85,11 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_recipe);
-        ButterKnife.bind(this);
 
+        ButterKnife.bind(this);
         // Hide keyboard unless EditText is tapped
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        // Add back button and title to action bar
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(R.string.title_add_recipe_activity);
-        }
-
+        setUpActionBar();
         // Set up views with adapters
         initRecyclerView();
     }
@@ -107,6 +103,9 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
                 displayImage(data);
             } else if (requestCode == ADD_INGREDIENTS_REQUEST) {
                 // TODO: get list of Ingredients, probably from JSON String
+                // Get type of Ingredients list for Gson to use
+                Type listOfIngredients = new TypeToken<List<Ingredient>>(){}.getType();
+                mIngredients = new Gson().fromJson(data.getDataString(), listOfIngredients);
             }
         }
     }
@@ -189,23 +188,21 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
     }
 
     /**
+     * This method sets up the Activity's ActionBar.
+     */
+    private void setUpActionBar() {
+        // Add back button and title to action bar
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.title_add_recipe_activity);
+        }
+    }
+
+    /**
      * This method uploads the new recipe.
      */
     private void uploadRecipe() {
         // TODO: upload recipe
     }
-
-    /**
-     * This sets up the ingredient Spinner.
-     */
-    /*private void initSpinner() {
-        // Generate array of options from resources
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.count_types,
-                android.R.layout.simple_spinner_item /* default spinner layout );
-        // Specify layout to use when list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Set adapter to spinner
-        mNewIngredientSpinner.setAdapter(adapter);
-    }*/
 }
