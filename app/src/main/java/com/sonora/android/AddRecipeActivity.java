@@ -21,6 +21,7 @@ import com.sonora.android.adapters.RecipeCompsAdapter;
 import com.sonora.android.interfaces.ListItemClickListener;
 import com.sonora.android.interfaces.OnImageRetrievedListener;
 import com.sonora.android.models.Ingredient;
+import com.sonora.android.utils.Constants;
 import com.sonora.android.utils.ImageUtil;
 
 import java.io.IOException;
@@ -102,10 +103,18 @@ public class AddRecipeActivity extends AppCompatActivity implements ListItemClic
                 // Display image
                 displayImage(data);
             } else if (requestCode == ADD_INGREDIENTS_REQUEST) {
-                // TODO: get list of Ingredients, probably from JSON String
                 // Get type of Ingredients list for Gson to use
                 Type listOfIngredients = new TypeToken<List<Ingredient>>(){}.getType();
-                mIngredients = new Gson().fromJson(data.getDataString(), listOfIngredients);
+                mIngredients = new Gson()
+                        .fromJson(data
+                                .getStringExtra(Constants.INGREDIENTS_KEY), listOfIngredients);
+
+            } else if (requestCode == ADD_INSTRUCTIONS_REQUEST) {
+                // Fetch instructions from intent data
+                mInstructions = data.getStringArrayListExtra(Constants.INSTRUCTIONS_KEY);
+            } else if (requestCode == ADD_TAGS_REQUEST) {
+                // Fetch tags from intent data
+                mTags = data.getStringArrayListExtra(Constants.TAGS_KEY);
             }
         }
     }
